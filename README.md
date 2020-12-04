@@ -1,14 +1,14 @@
 ## Proxy Server
 
-Implement some nginx proxy server structures:
+### Implement some nginx proxy server structures:
 
-- Basic structure:
+-   Basic structure:
 
 ```
     client <-> NGINX <-> proxy_passs to <-> SERVER
 ```
 
-- Cache structure:
+-   Cache structure:
 
 ```
     client <-> NGINX <-> proxy_passs to <-> SERVER
@@ -17,7 +17,7 @@ Implement some nginx proxy server structures:
                REDIS
 ```
 
-- Filter request structure:
+-   Filter request structure:
 
 ```
                HTML REDIS <-> HTML NGINX <-> SERVER
@@ -26,17 +26,33 @@ Implement some nginx proxy server structures:
     client <-> FILTER NGINX
                             \
                              \
-              VIDEO REDIS <-> VIDEO NGINX <-> SERVER
+              IMAGE REDIS <-> IMAGE NGINX <-> SERVER
 ```
 
-- DDOS + Filter request structure:
+-   Anti-DDOS + Filter request structure:
 
 ```
-                             HTML REDIS <-> HTML NGINX <-> SERVER
-                                           /
-                                          /
-    client <-> DDOS NGINX <-> FILTER NGINX
-                                          \
-                                           \
-                            VIDEO REDIS <-> VIDEO NGINX <-> SERVER
+                                   HTML REDIS <-> HTML NGINX <-> SERVER
+                                                 /
+                                                /
+    client <-> ANTI DDOS NGINX <-> FILTER NGINX
+                                                \
+                                                 \
+                                  IMAGE REDIS <-> IMAGE NGINX <-> SERVER
 ```
+
+### Docker ports expose:
+
+| Docker image | Expose port |
+| ------------ | :---------: |
+| NGINX        |    7000     |
+| FILTER NGINX |    7001     |
+| DDOS NGINX   |    7003     |
+| HTML NGINX   |    7010     |
+| IMAGE NGINX  |    7011     |
+|              |             |
+| SERVER       |    8000     |
+|              |             |
+| REDIS        |    9000     |
+| HTML REDIS   |    9001     |
+| IMAGE REDIS  |    9002     |
