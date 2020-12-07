@@ -2,13 +2,13 @@
 
 ### Implement some nginx proxy server structures:
 
--   Basic structure:
+- Basic structure:
 
 ```
     client <-> NGINX <-> proxy_passs to <-> SERVER
 ```
 
--   Cache structure:
+- Cache structure:
 
 ```
     client <-> NGINX <-> proxy_passs to <-> SERVER
@@ -17,42 +17,44 @@
                REDIS
 ```
 
--   Filter request structure:
+- Filter request structure:
 
 ```
-               HTML REDIS <-> HTML NGINX <-> SERVER
-                             /
+              REDIS-HTML <-> NGINX-HTML <-> SERVER-HTML
                             /
-    client <-> FILTER NGINX
+                           /
+    client <-> NGINX-FILTER
+                           \
                             \
-                             \
-              IMAGE REDIS <-> IMAGE NGINX <-> SERVER
+             REDIS-IMAGE <-> NGINX-IMAGE <-> SERVER-IMAGE
 ```
 
--   Anti-DDOS + Filter request structure:
+- Anti-DDOS + Filter request structure:
 
 ```
-                                   HTML REDIS <-> HTML NGINX <-> SERVER
-                                                 /
+                                  REDIS-HTML <-> NGINX-HTML <-> SERVER-HTML
                                                 /
-    client <-> ANTI DDOS NGINX <-> FILTER NGINX
+                                               /
+    client <-> NGINX-ANTI-DDOS <-> NGINX-FILTER
+                                               \
                                                 \
-                                                 \
-                                  IMAGE REDIS <-> IMAGE NGINX <-> SERVER
+                                 REDIS-IMAGE <-> NGINX-IMAGE <-> SERVER-IMAGE
 ```
 
 ### Docker ports expose:
 
-| Docker image | Expose port |
-| ------------ | :---------: |
-| NGINX        |    7000     |
-| FILTER NGINX |    7001     |
-| DDOS NGINX   |    7003     |
-| HTML NGINX   |    7010     |
-| IMAGE NGINX  |    7011     |
-|              |             |
-| SERVER       |    8000     |
-|              |             |
-| REDIS        |    9000     |
-| HTML REDIS   |    9001     |
-| IMAGE REDIS  |    9002     |
+| Docker image    | Expose port |
+| --------------- | :---------: |
+| NGINX           |    7000     |
+| NGINX-FILTER    |    7100     |
+| NGINX-ANTI-DDOS |    7200     |
+| NGINX-HTML      |    7001     |
+| NGINX-IMAGE     |    7002     |
+|                 |             |
+| SERVER          |    8000     |
+| SERVER-HTML     |    8001     |
+| SERVER-IMAGE    |    8002     |
+|                 |             |
+| REDIS           |    9000     |
+| REDIS-HTML      |    9001     |
+| REDIS-IMAGE     |    9002     |

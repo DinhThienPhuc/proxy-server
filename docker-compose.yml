@@ -1,0 +1,36 @@
+version: '3.8'
+
+# ps: proxy-server
+services:
+  ps_server:
+    image: ps_server
+    container_name: ps_server
+    stdin_open: true
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    volumes:
+      - '/app/node_modules'
+      - './:/app'
+    networks:
+      - ps_network
+
+  ps_nginx:
+    image: ps_nginx
+    container_name: ps_nginx
+    stdin_open: true
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    ports:
+      - '7000:7000'
+    restart: unless-stopped
+    depends_on:
+      - ps_server
+    networks:
+      - ps_network
+
+networks:
+  ps_network:
+    driver: bridge
