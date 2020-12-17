@@ -10,22 +10,10 @@ app.set('trust proxy', true)
 app.use(cors())
 app.use(morgan('combined'))
 
-app.get('/basic', (req, res) => {
-  console.log('basic: ', req.headers)
+app.get('/cache/:path', (req, res) => {
   res.json({
-    message: 'Basic flow',
-    route: '/basic',
-    data: {
-      time: Date.now(),
-    },
-  })
-})
-
-app.get('/redis-cache', (req, res) => {
-  console.log('redis cache: ', req.headers)
-  res.json({
-    message: 'Redis Cache flow',
-    route: '/redis-cache',
+    message: 'Cache route',
+    route: `/${req.params.path}`,
     data: {
       time: Date.now(),
     },
@@ -34,7 +22,7 @@ app.get('/redis-cache', (req, res) => {
 
 app.get('/:path', (req, res) => {
   res.json({
-    message: 'Mixin flow',
+    message: 'All route',
     route: `/${req.params.path}`,
     data: {
       time: Date.now(),

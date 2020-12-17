@@ -14,31 +14,31 @@
     client <-> NGINX <-> proxy_passs to <-> SERVER
                  |
                  |
-               REDIS
+               Cache
 ```
 
 - Filter request structure:
 
 ```
-              REDIS-HTML <-> NGINX-HTML <-> SERVER-HTML
+              Cache-HTML <-> NGINX-HTML <-> SERVER-HTML
                             /
                            /
     client <-> NGINX-FILTER
                            \
                             \
-             REDIS-IMAGE <-> NGINX-IMAGE <-> SERVER-IMAGE
+             Cache-Image <-> NGINX-IMAGE <-> SERVER-IMAGE
 ```
 
 - Anti-DDOS + Filter request structure:
 
 ```
-                                  REDIS-HTML <-> NGINX-HTML <-> SERVER-HTML
+                                  Cache-HTML <-> NGINX-HTML <-> SERVER-HTML
                                                 /
                                                /
     client <-> NGINX-ANTI-DDOS <-> NGINX-FILTER
                                                \
                                                 \
-                                 REDIS-IMAGE <-> NGINX-IMAGE <-> SERVER-IMAGE
+                                 Cache-IMAGE <-> NGINX-IMAGE <-> SERVER-IMAGE
 ```
 
 ### Docker ports expose:
@@ -54,7 +54,3 @@
 | SERVER          |    8000     |
 | SERVER-HTML     |    8001     |
 | SERVER-IMAGE    |    8002     |
-|                 |             |
-| REDIS           |    9000     |
-| REDIS-HTML      |    9001     |
-| REDIS-IMAGE     |    9002     |
