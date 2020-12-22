@@ -11,31 +11,37 @@ app.use(cors())
 app.use(morgan('combined'))
 
 app.get('/cache/:path', (req, res) => {
+  const date = new Date()
+
   res.json({
     message: 'Cache route',
     route: `/${req.params.path}`,
     data: {
-      time: Date.now(),
+      time: date.toLocaleString(),
     },
   })
 })
 
 app.get('/:path', (req, res) => {
+  const date = new Date()
+
   res.json({
     message: 'All route',
     route: `/${req.params.path}`,
     data: {
-      time: Date.now(),
+      time: date.toLocaleString(),
     },
   })
 })
 
 app.get('/', (_, res) => {
+  const date = new Date()
+
   res.json({
     message: 'Homepage',
     route: '/',
     data: {
-      time: Date.now(),
+      time: date.toLocaleString(),
     },
   })
 })
