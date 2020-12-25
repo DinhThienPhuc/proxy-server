@@ -49,6 +49,21 @@ services:
     networks:
       - ps_network
 
+  ps_nginx_html:
+    image: ps_nginx_html
+    container_name: ps_nginx_html
+    stdin_open: true
+    build:
+      context: ./nginx-html
+      dockerfile: Dockerfile
+    ports:
+      - '7001:7001'
+    restart: unless-stopped
+    depends_on:
+      - ps_server_html
+    networks:
+      - ps_network
+
 networks:
   ps_network:
     driver: bridge
