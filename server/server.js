@@ -32,7 +32,7 @@ app.get('/:path', (req, res) => {
   })
 })
 
-app.get('/', (_, res) => {
+app.get('/', (req, res) => {
   const date = new Date()
 
   res.json({
