@@ -18,6 +18,22 @@ services:
     networks:
       - ps_network
 
+  ps_server_html:
+    image: ps_server_html
+    container_name: ps_server_html
+    stdin_open: true
+    build:
+      context: ./server-html
+      dockerfile: Dockerfile
+    ports:
+      - '8001:8001'
+    restart: unless-stopped
+    volumes:
+      - '/app/node_modules'
+      - './:/app'
+    networks:
+      - ps_network
+
   ps_nginx:
     image: ps_nginx
     container_name: ps_nginx
