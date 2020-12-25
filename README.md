@@ -20,25 +20,25 @@
 - Filter request structure:
 
 ```
-              Cache-HTML <-> NGINX-HTML <-> SERVER-HTML
+                             NGINX-HTML <-> SERVER-HTML
                             /
                            /
     client <-> NGINX-FILTER
-                           \
-                            \
-             Cache-Image <-> NGINX-IMAGE <-> SERVER-IMAGE
+                    |      \
+                    |       \
+                  Cache      NGINX-IMAGE <-> SERVER-IMAGE
 ```
 
 - Anti-DDOS + Filter request structure:
 
 ```
-                                  Cache-HTML <-> NGINX-HTML <-> SERVER-HTML
+                                                 NGINX-HTML <-> SERVER-HTML
                                                 /
                                                /
     client <-> NGINX-ANTI-DDOS <-> NGINX-FILTER
-                                               \
-                                                \
-                                 Cache-IMAGE <-> NGINX-IMAGE <-> SERVER-IMAGE
+                      |                        \
+                      |                         \
+                    Cache                        NGINX-IMAGE <-> SERVER-IMAGE
 ```
 
 ### Docker ports expose:
