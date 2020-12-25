@@ -14,11 +14,10 @@ app.get('/cache/:path', (req, res) => {
   const date = new Date()
 
   res.json({
-    message: 'Cache route',
+    type: 'cache',
     route: `/${req.params.path}`,
-    data: {
-      time: date.toLocaleString(),
-    },
+    headers: req.headers,
+    time: date.toLocaleString(),
   })
 })
 
@@ -26,11 +25,10 @@ app.get('/:path', (req, res) => {
   const date = new Date()
 
   res.json({
-    message: 'All route',
+    type: 'basic',
     route: `/${req.params.path}`,
-    data: {
-      time: date.toLocaleString(),
-    },
+    headers: req.headers,
+    time: date.toLocaleString(),
   })
 })
 
@@ -38,11 +36,10 @@ app.get('/', (_, res) => {
   const date = new Date()
 
   res.json({
-    message: 'Homepage',
+    type: 'basic - homepage',
     route: '/',
-    data: {
-      time: date.toLocaleString(),
-    },
+    headers: req.headers,
+    time: date.toLocaleString(),
   })
 })
 
