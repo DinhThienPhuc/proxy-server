@@ -34,6 +34,22 @@ services:
     networks:
       - ps_network
 
+  ps_server_image:
+    image: ps_server_image
+    container_name: ps_server_image
+    stdin_open: true
+    build:
+      context: ./server-image
+      dockerfile: Dockerfile
+    ports:
+      - '8002:8002'
+    restart: unless-stopped
+    volumes:
+      - '/app/node_modules'
+      - './:/app'
+    networks:
+      - ps_network
+
   ps_nginx:
     image: ps_nginx
     container_name: ps_nginx
@@ -61,6 +77,21 @@ services:
     restart: unless-stopped
     depends_on:
       - ps_server_html
+    networks:
+      - ps_network
+
+  ps_nginx_image:
+    image: ps_nginx_image
+    container_name: ps_nginx_image
+    stdin_open: true
+    build:
+      context: ./nginx-image
+      dockerfile: Dockerfile
+    ports:
+      - '7002:7002'
+    restart: unless-stopped
+    depends_on:
+      - ps_server_image
     networks:
       - ps_network
 
