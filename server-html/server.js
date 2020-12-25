@@ -11,7 +11,7 @@ app.use(cors())
 app.use(morgan('combined'))
 
 app.get('/', (_, res) => {
-  res.sendFile('./joke.jpg')
+  res.sendFile(__dirname + '/index.html')
 })
 
 app.listen(port, () => console.log('Server is running'))
