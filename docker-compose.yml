@@ -95,6 +95,22 @@ services:
     networks:
       - ps_network
 
+  ps_nginx_filter:
+    image: ps_nginx_filter
+    container_name: ps_nginx_filter
+    stdin_open: true
+    build:
+      context: ./nginx-filter
+      dockerfile: Dockerfile
+    ports:
+      - '7100:7100'
+    restart: unless-stopped
+    depends_on:
+      - ps_nginx_html
+      - ps_nginx_image
+    networks:
+      - ps_network
+
 networks:
   ps_network:
     driver: bridge
