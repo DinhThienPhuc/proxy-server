@@ -10,8 +10,11 @@ app.set('trust proxy', true)
 app.use(cors())
 app.use(morgan('combined'))
 
-app.get('/', (_, res) => {
-  res.sendFile(__dirname + '/joke.jpg')
+app.get('/:path', (_, res) => {
+  // res.sendFile(__dirname + '/joke.jpg')
+  res.json({
+    data: 'IMAGE',
+  })
 })
 
 app.listen(port, () => console.log('Server is running'))
