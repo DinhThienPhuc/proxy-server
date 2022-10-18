@@ -1,16 +1,16 @@
-## Proxy Server
+# Proxy Server
 
-### Implement some nginx proxy server structures:
+## Implement some nginx proxy server structures
 
 - Basic structure:
 
-```
+```bash
     client <-> NGINX <-> proxy_passs to <-> SERVER
 ```
 
 - Cache structure:
 
-```
+```bash
     client <-> NGINX <-> proxy_passs to <-> SERVER
                  |
                  |
@@ -19,7 +19,7 @@
 
 - Filter request structure:
 
-```
+```bash
                              NGINX-HTML <-> SERVER-HTML
                             /
                            /
@@ -31,7 +31,7 @@
 
 - Anti-DDOS + Filter request structure:
 
-```
+```bash
                                                  NGINX-HTML <-> SERVER-HTML
                                                 /
                                                /
@@ -41,7 +41,7 @@
                     Cache                        NGINX-IMAGE <-> SERVER-IMAGE
 ```
 
-### Docker ports expose:
+## Docker ports expose
 
 | Docker image    | Expose port |
 | --------------- | :---------: |
@@ -55,7 +55,7 @@
 | SERVER-HTML     |    8001     |
 | SERVER-IMAGE    |    8002     |
 
-### GUIDE
+## GUIDE
 
 - Allow to execute the script
 
