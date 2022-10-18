@@ -54,6 +54,8 @@
 | SERVER          |    8000     |
 | SERVER-HTML     |    8001     |
 | SERVER-IMAGE    |    8002     |
+|                 |             |
+| CLIENT-REACT    |    6000     |
 
 ## GUIDE
 
