@@ -15,7 +15,7 @@ const Navbar = () => {
   const { theme, setTheme } = useTheme();
   const [refreshToken, setRefreshToken] = useSessionStorage<string | null>(
     "refresh-token",
-    null
+    null,
   );
 
   const activateLink = useCallback((isLastItem?: boolean) => {
@@ -41,7 +41,7 @@ const Navbar = () => {
         console.log(error);
       }
     },
-    [i18n]
+    [i18n],
   );
 
   const handleThemeSwitch = useCallback(async () => {
