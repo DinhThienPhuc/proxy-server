@@ -16,3 +16,11 @@ export interface IPostResponse extends IBaseResponse {
 export interface IPostListResponse extends IBaseResponse {
   data: IPostData[];
 }
+
+export interface ExamItem {
+  [key: string]: any
+}
+
+export interface ListExams {
+  data: ExamItem[]
+}
