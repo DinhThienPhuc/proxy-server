@@ -109,6 +109,11 @@ const mockExams = [
   },
 ]
 
+app.get('/exams/:id', (req, res) => {
+  const detailExam = mockExams.find((exam) => exam.id === req.params.path)
+  res.json(detailExam)
+})
+
 app.get('/exams', (req, res) => {
   res.json(mockExams)
 })
