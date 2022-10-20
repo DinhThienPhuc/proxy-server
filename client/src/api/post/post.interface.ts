@@ -20,7 +20,3 @@ export interface IPostListResponse extends IBaseResponse {
 export interface ExamItem {
   [key: string]: any
 }
-
-export interface ListExams {
-  data: ExamItem[]
-}
