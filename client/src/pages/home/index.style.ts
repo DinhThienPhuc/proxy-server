@@ -1,8 +1,7 @@
 /* PAGE STYLES: HOME
    ========================================================================== */
 
-import { Input, MenuItem, Select } from "@mui/material";
-
+import { Select, MenuItem, Input } from "@mui/material";
 import styled from "styled-components";
 
 const Styled = {
@@ -49,7 +48,7 @@ const Styled = {
   SearchInput: styled(Input)``,
   OptionItem: styled(MenuItem)`
     font-size: 14px;
-  `,
+  `
 };
 
 export default Styled;
