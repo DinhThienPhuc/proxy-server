@@ -1,11 +1,22 @@
 /* PAGE: HOME
    ========================================================================== */
 
-import { getListExams } from "api/post/post.api";
 import Styled from "./index.style";
+import { getListExams } from "../../api/post/post.api";
+import { useEffect } from "react";
 
 const Home = () => {
-  const listExamsResponse = getListExams();
+  useEffect(() => {
+    (async () => {
+      try {
+        const listExamsResponse = await getListExams();
+
+        console.log("meo", listExamsResponse?.data);
+      } catch (error) {
+        console.log("error", error);
+      }
+    })();
+  }, []);
 
   return (
     <Styled.Container>

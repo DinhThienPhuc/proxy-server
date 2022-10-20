@@ -95,5 +95,8 @@
   "lint-staged": {
     "*.ts*": "eslint --fix --max-warnings 0",
     "*.js*": "eslint --fix"
+  },
+  "overrides": {
+    "react-refresh": "0.11.0"
   }
 }
