@@ -28,7 +28,6 @@
   "rules": {
     "indent": ["warn", 2, { "ignoredNodes": ["ConditionalExpression"] }],
     "quotes": ["warn", "double"],
-    "semi": ["warn", "always"],
     "react/react-in-jsx-scope": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "react-hooks/rules-of-hooks": "error",
