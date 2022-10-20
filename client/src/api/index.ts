@@ -1,3 +1,1 @@
-import { getPostById, getPosts } from "./post/post.api";
-
-export { getPosts, getPostById };
+export { getListExams, getPostById, getPosts } from "./post/post.api";

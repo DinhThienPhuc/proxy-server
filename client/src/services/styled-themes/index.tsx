@@ -27,7 +27,7 @@ const ThemesProvider = ({ children }: IProps) => {
 
   const selectedSchema = useMemo(
     () => (theme ? schemas.data[theme] : schemas.data.dark),
-    [theme]
+    [theme],
   );
 
   return (

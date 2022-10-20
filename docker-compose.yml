@@ -2,15 +2,15 @@ version: '3.8'
 
 # ps: proxy-server
 services:
-  ps_client_react:
-    image: ps_client_react
-    container_name: ps_client_react
+  ps_client:
+    image: ps_client
+    container_name: ps_client
     stdin_open: true
     build:
-      context: ./client-react
+      context: ./client
       dockerfile: Dockerfile
     ports:
-      - '80:6000'
+      - '80:80'
     restart: unless-stopped
     networks:
       - ps_network
