@@ -5,6 +5,15 @@
       "homepage": "Trang chủ",
       "posts": "Bài viết",
       "about_us": "Về chúng tôi"
+    },
+    "homepage": {
+      "filter_title": "Danh sách bài thi",
+      "filter_label": "Bộ lọc:",
+      "filter": {
+        "all": "Tất cả bài thi",
+        "pending": "Chưa hoàn thành",
+        "tested": "Đã hoàn thành"
+      }
     }
   }
 }

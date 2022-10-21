@@ -5,6 +5,15 @@
       "homepage": "Homepage",
       "posts": "Posts",
       "about_us": "About us"
+    },
+    "homepage": {
+      "filter_title": "List Exams",
+      "filter_label": "Filter:",
+      "filter": {
+        "all": "All",
+        "pending": "Pending",
+        "tested": "Tested"
+      }
     }
   }
 }

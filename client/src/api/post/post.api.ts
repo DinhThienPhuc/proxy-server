@@ -1,7 +1,7 @@
 /* POST API REQUESTS
    ========================================================================== */
 
-import { IPostListResponse, IPostResponse, ListExams } from "./post.interface";
+import { ExamItem, IPostListResponse, IPostResponse } from "./post.interface";
 
 import { AxiosResponse } from "axios";
 import { requestWithoutJwt } from "../request";
@@ -16,6 +16,6 @@ export const getPostById = (
   return requestWithoutJwt.get<IPostResponse>(`/posts/${id}`);
 };
 
-export const getListExams = (): Promise<AxiosResponse<ListExams>> => {
-  return requestWithoutJwt.get<ListExams>("/exams");
+export const getListExams = (): Promise<AxiosResponse<ExamItem[]>> => {
+  return requestWithoutJwt.get<ExamItem[]>("/exams");
 };
