@@ -1,15 +1,15 @@
 /* PAGE: HOME
    ========================================================================== */
 
+import { useEffect, useMemo, useState } from "react";
 
+import ExamCard from "./components/ExamCard";
+import { ExamItem } from "api/post/post.interface";
 import { InputAdornment } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import { getListExams } from "api/post/post.api";
-import { ExamItem } from "api/post/post.interface";
-import { useEffect, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
-import ExamCard from "./components/ExamCard";
 import Styled from "./index.style";
+import { getListExams } from "api/post/post.api";
+import { useTranslation } from "react-i18next";
 
 const Home = () => {
   const [dataState, setDataState] = useState<ExamItem[]>([] as ExamItem[]);
