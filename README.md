@@ -56,6 +56,8 @@
 | SERVER-IMAGE    |    8002     |
 |                 |             |
 | CLIENT-REACT    |    6000     |
+|                 |             |
+| MY-SQL          |    9000     |
 
 ## GUIDE
 

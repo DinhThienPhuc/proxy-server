@@ -1,7 +1,8 @@
 /* PAGE STYLES: HOME
    ========================================================================== */
 
-import { Select, MenuItem, Input } from "@mui/material";
+import { Input, MenuItem, Select } from "@mui/material";
+
 import styled from "styled-components";
 
 const Styled = {
@@ -12,7 +13,7 @@ const Styled = {
   `,
   ListExams: styled.div`
     display: grid;
-    grid-template-columns: repeat( auto-fit, minmax(400px, 1fr) );
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
     grid-gap: 16px;
     margin-top: 30px;
   `,
@@ -48,7 +49,7 @@ const Styled = {
   SearchInput: styled(Input)``,
   OptionItem: styled(MenuItem)`
     font-size: 14px;
-  `
+  `,
 };
 
 export default Styled;
