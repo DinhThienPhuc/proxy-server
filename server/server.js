@@ -13,7 +13,7 @@ app.use(cors())
 app.use(morgan('combined'))
 
 const mysqlConnector = mysql.createConnection({
-  host: 'localhost',
+  host: process.env.NODE_ENV === 'production' ? 'ps_mysql' : 'localhost',
   port: 3306,
   user: 'root',
   password: 'quizz',
