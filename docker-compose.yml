@@ -127,6 +127,7 @@ services:
   ps_mysql:
     image: ps_mysql
     container_name: ps_mysql
+    restart: always
     build:
       context: ./mysql
       args:
@@ -134,15 +135,12 @@ services:
         - MYSQL_USER=quizz
         - MYSQL_PASSWORD=quizz
         - MYSQL_ROOT_PASSWORD=quizz
-    volumes:
-      - mysql:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=quizz
     ports:
       - '3306:3306'
     networks:
       - ps_network
-
-volumes:
-  mysql:
 
 networks:
   ps_network:
