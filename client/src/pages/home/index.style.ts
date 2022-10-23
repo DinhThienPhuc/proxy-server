@@ -1,8 +1,7 @@
 /* PAGE STYLES: HOME
    ========================================================================== */
 
-import { Input, MenuItem, Select } from "@mui/material";
-
+import { Select, MenuItem, Input } from "@mui/material";
 import styled from "styled-components";
 
 const Styled = {
@@ -35,21 +34,25 @@ const Styled = {
     font-size: 14px;
   `,
   Filter: styled(Select)`
-    width: 150px;
+    width: 200px;
     height: 35px;
-    background: white;
     color: gray;
     outline: none;
     cursor: pointer;
-    border: 1px solid #dedede;
     font-size: 14px;
     border-radius: 4px;
     color: #323232;
+    margin-right: 10px;
   `,
   SearchInput: styled(Input)``,
   OptionItem: styled(MenuItem)`
     font-size: 14px;
   `,
+  PaginationContainer: styled.div`
+    display: flex;
+    margin-top: 16px;
+    justify-content: center;
+  `
 };
 
 export default Styled;

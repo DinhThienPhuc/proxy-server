@@ -20,6 +20,9 @@ const Login = loadable(() => import("pages/login"), {
 const NotFound = loadable(() => import("pages/not-found"), {
   fallback: <Loading />,
 });
+const Detail = loadable(() => import("pages/detail"), {
+  fallback: <Loading />,
+});
 
 /**
  * Use <AuthRoute /> to protect authenticate pages
@@ -42,6 +45,7 @@ const routes: RouteObject[] = [
     ),
     children: [
       { index: true, element: <Home /> },
+      { path: ROUTES.detail, element: <Detail /> },
       { path: ROUTES.notfound, element: <NotFound /> },
     ],
   },

@@ -26,7 +26,11 @@
   },
   "plugins": ["react", "@typescript-eslint", "react-hooks"],
   "rules": {
-    "indent": ["warn", 2, { "ignoredNodes": ["ConditionalExpression"] }],
+    "indent": [
+      "warn",
+      2,
+      { "ignoredNodes": ["ConditionalExpression"], "SwitchCase": 1 }
+    ],
     "quotes": ["warn", "double"],
     "react/react-in-jsx-scope": "off",
     "@typescript-eslint/no-explicit-any": "off",

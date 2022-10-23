@@ -13,7 +13,11 @@
         "all": "Tất cả bài thi",
         "pending": "Chưa hoàn thành",
         "tested": "Đã hoàn thành"
-      }
+      },
+      "filter_placeholder_search": "Tên bài thi"
+    },
+    "detail": {
+      "question_no": "Câu hỏi" 
     }
   }
 }

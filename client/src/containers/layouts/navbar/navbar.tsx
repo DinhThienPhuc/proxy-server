@@ -90,7 +90,7 @@ const Navbar = () => {
       </div>
       <Styled.Right>
         <Select options={languageOptions} onChange={handleChange} />
-        {renderThemeSwitcher}
+        {/* {renderThemeSwitcher} */}
         {renderUserMenu}
       </Styled.Right>
     </Styled.Container>

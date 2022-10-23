@@ -23,7 +23,7 @@ const ThemeContext = createContext<IContext>({
 });
 
 const ThemesProvider = ({ children }: IProps) => {
-  const [theme, setTheme] = useState<IThemes>("dark");
+  const [theme, setTheme] = useState<IThemes>("light");
 
   const selectedSchema = useMemo(
     () => (theme ? schemas.data[theme] : schemas.data.dark),
