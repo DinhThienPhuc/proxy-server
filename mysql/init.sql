@@ -12,6 +12,8 @@
 CREATE DATABASE  IF NOT EXISTS `quizz` /*!40100 DEFAULT CHARACTER SET latin1 */;
 USE `quizz`;
 
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'quizz'; 
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'quizz';
 
 -- Create table: Questions
 DROP TABLE IF EXISTS `questions`;
@@ -103,7 +105,7 @@ UNLOCK TABLES;
 -- Dumping data for table `exams`
 LOCK TABLES `exams` WRITE;
 /*!40000 ALTER TABLE `questions` DISABLE KEYS */;
-INSERT INTO `exams` VALUES (1,'Civil Services Examination','Indian Administrative Services','admin@quizz.com','Admin permission','male','50');
+INSERT INTO `exams` VALUES (1,'Civil Services Examination','Indian Administrative Services');
 /*!40000 ALTER TABLE `exams` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
