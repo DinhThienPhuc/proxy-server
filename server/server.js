@@ -11,17 +11,17 @@ app.set('trust proxy', true)
 app.use(cors())
 app.use(morgan('combined'))
 
-const mysqlConnector = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'quizz',
-  database: 'quizz',
-})
+// const mysqlConnector = mysql.createConnection({
+//   host: 'localhost',
+//   user: 'root',
+//   password: 'quizz',
+//   database: 'quizz',
+// })
 
-mysqlConnector.connect((err) => {
-  if (err) throw err
-  console.log('Connected!')
-})
+// mysqlConnector.connect((err) => {
+//   if (err) throw err
+//   console.log('Connected!')
+// })
 
 const QUESTION_TYPE = {
   MULTIPLE_CHOICE: 'MULTIPLE_CHOICE',

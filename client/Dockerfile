@@ -9,7 +9,7 @@ WORKDIR /app
 COPY package.json .
 COPY package-lock.json .
 
-RUN npm install --omit=dev
+RUN npm install
 
 # Copy app files
 COPY . .
