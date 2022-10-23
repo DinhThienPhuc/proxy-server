@@ -1,36 +1,13 @@
 version: '3.8'
 
-# ps: proxy-server
+volumes:
+  ps_mysql_data:
+
+networks:
+  ps_network:
+    driver: bridge
+
 services:
-  ps_client:
-    image: ps_client
-    container_name: ps_client
-    stdin_open: true
-    build:
-      context: ./client
-      dockerfile: Dockerfile
-    ports:
-      - '80:80'
-    restart: unless-stopped
-    networks:
-      - ps_network
-
-  ps_server:
-    image: ps_server
-    container_name: ps_server
-    stdin_open: true
-    build:
-      context: ./server
-      dockerfile: Dockerfile
-    ports:
-      - '8000:8000'
-    restart: unless-stopped
-    volumes:
-      - '/app/node_modules'
-      - './:/app'
-    networks:
-      - ps_network
-
   ps_mysql:
     image: ps_mysql
     container_name: ps_mysql
@@ -46,14 +23,42 @@ services:
       - MYSQL_ROOT_PASSWORD=quizz
     volumes:
       - ps_mysql_data:/var/lib/mysql
+    expose:
+      - '3306'
     ports:
       - '3306:3306'
     networks:
       - ps_network
 
-volumes:
-  ps_mysql_data:
+  ps_server:
+    depends_on:
+      - ps_mysql
+    image: ps_server
+    container_name: ps_server
+    stdin_open: true
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - '8000:8000'
+    restart: unless-stopped
+    volumes:
+      - '/app/node_modules'
+      - './:/app'
+    networks:
+      - ps_network
 
-networks:
-  ps_network:
-    driver: bridge
+  ps_client:
+    depends_on:
+      - ps_server
+    image: ps_client
+    container_name: ps_client
+    stdin_open: true
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - '80:80'
+    restart: unless-stopped
+    networks:
+      - ps_network
