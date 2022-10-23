@@ -13,7 +13,11 @@
         "all": "All",
         "pending": "Pending",
         "tested": "Tested"
-      }
+      },
+      "filter_placeholder_search": "Test's name"
+    },
+    "detail": {
+      "question_no": "Question" 
     }
   }
 }

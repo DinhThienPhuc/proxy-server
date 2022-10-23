@@ -5,15 +5,22 @@ import { useEffect, useMemo, useState } from "react";
 
 import ExamCard from "./components/ExamCard";
 import { ExamItem } from "api/post/post.interface";
-import { InputAdornment } from "@mui/material";
+import { InputAdornment, Pagination } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import Styled from "./index.style";
 import { getListExams } from "api/post/post.api";
 import { useTranslation } from "react-i18next";
 
+type ParamsList = {
+  search?: string;
+  page?: number;
+  status?: string;
+};
+
 const Home = () => {
   const [dataState, setDataState] = useState<ExamItem[]>([] as ExamItem[]);
   const [filter, setFilter] = useState<string>("all");
+  const [page, setPage] = useState<number>(10);
   const { t } = useTranslation();
 
   const filterOptions = useMemo(() => {
@@ -33,12 +40,14 @@ const Home = () => {
     ];
   }, [t]);
 
-  const getData = async () => {
+  const getData = async (params?: ParamsList) => {
     try {
       const listExamsResponse = await getListExams();
       if (!listExamsResponse.data) {
         setDataState([]);
-      } else setDataState(listExamsResponse.data);
+      } else {
+        setDataState(listExamsResponse.data);
+      }
     } catch (e) {
       console.log("error", e);
     }
@@ -68,15 +77,15 @@ const Home = () => {
               </Styled.OptionItem>
             ))}
           </Styled.Filter>
+          <Styled.SearchInput
+            placeholder={t("homepage.filter_placeholder_search")}
+            startAdornment={
+              <InputAdornment position="start">
+                <SearchIcon />
+              </InputAdornment>
+            }
+          />
         </Styled.FilterDropdown>
-        <Styled.SearchInput
-          id="input-with-icon-adornment"
-          startAdornment={
-            <InputAdornment position="end">
-              <SearchIcon />
-            </InputAdornment>
-          }
-        />
       </Styled.FilterContainer>
       <Styled.ListExams>
         {dataState.map((item, index) => (
@@ -90,6 +99,9 @@ const Home = () => {
           />
         ))}
       </Styled.ListExams>
+      <Styled.PaginationContainer>
+        <Pagination count={page} />
+      </Styled.PaginationContainer>
     </Styled.Container>
   );
 };
