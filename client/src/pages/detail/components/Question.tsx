@@ -9,6 +9,7 @@ export enum QUESTION_TYPE {
 }
 
 interface Props extends QuestionProps {
+  questionId?: string;
   type: QUESTION_TYPE;
 }
 
