@@ -1,8 +1,9 @@
-import React, { useState } from "react";
-import { useTranslation } from "react-i18next";
-import Styled from "./index.style";
-import { FieldValues, useFormContext, UseFormSetValue } from "react-hook-form";
 import { Box, Checkbox } from "@mui/material";
+import { FieldValues, UseFormSetValue, useFormContext } from "react-hook-form";
+import React, { useState } from "react";
+
+import Styled from "./index.style";
+import { useTranslation } from "react-i18next";
 
 export enum QUESTION_TYPE {
   MULTIPLE_CHOICE = "MULTIPLE_CHOICE",

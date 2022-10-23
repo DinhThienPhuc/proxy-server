@@ -44,10 +44,15 @@ services:
         - MYSQL_ROOT_PASSWORD=quizz
     environment:
       - MYSQL_ROOT_PASSWORD=quizz
+    volumes:
+      - ps_mysql_data:/var/lib/mysql
     ports:
       - '3306:3306'
     networks:
       - ps_network
+
+volumes:
+  ps_mysql_data:
 
 networks:
   ps_network:
