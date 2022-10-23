@@ -1,6 +1,6 @@
-import React from "react";
-import { useForm, FormProvider } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import Question, { QUESTION_TYPE } from "./components/Question";
+
 import Styled from "./index.style";
 
 const Detail = () => {
