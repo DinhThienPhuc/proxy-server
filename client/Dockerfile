@@ -1,16 +1,13 @@
-FROM node:alpine AS builder
+FROM node:alpine as builder
 
-# Add a work directory
+# Set the working directory to /app inside the container
 WORKDIR /app
-
-# Cache and Install dependencies
-COPY package.json .
-COPY package-lock.json .
-
-RUN npm install
 
 # Copy app files
 COPY . .
+
+# Install dependencies (npm ci makes sure the exact versions in the lockfile gets installed)
+RUN npm ci
 
 # Build the app
 RUN npm run build:production
@@ -20,7 +17,7 @@ FROM nginx:alpine as production
 
 ENV NODE_ENV production
 
-# Copy built assets from builder
+# Copy built assets from `builder` image
 COPY --from=builder /app/build /usr/share/nginx/html
 
 # Add your nginx.conf
