@@ -11,6 +11,7 @@ app.set('trust proxy', true)
 
 app.use(cors())
 app.use(morgan('combined'))
+app.use(express.json())
 
 const mysqlConnector = mysql.createConnection({
   host: process.env.NODE_ENV === 'production' ? 'ps_mysql' : 'localhost',
@@ -26,6 +27,18 @@ mysqlConnector.connect((err) => {
 })
 
 const FAKE_USER_ID = 123456
+
+app.post('/exams/:id', async (req, res) => {
+  try {
+    // const listExams = await queryPromise(
+    //   mysqlConnector,
+    //   `SELECT * FROM exams INNER JOIN users_exams ON users_exams.user_id=${FAKE_USER_ID} AND users_exams.exam_id=exams.id`
+    // )
+    res.json({ status: req.body })
+  } catch (error) {
+    res.json(error)
+  }
+})
 
 app.get('/exams/:id', async (req, res) => {
   try {
