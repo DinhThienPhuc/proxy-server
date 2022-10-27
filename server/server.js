@@ -5,7 +5,6 @@ const mysql = require('mysql2')
 const { queryPromise, parseAnswerRightOrWrong } = require('./utils')
 
 const app = express()
-const port = process.env.PORT || 8000
 
 app.set('trust proxy', true)
 
@@ -13,13 +12,15 @@ app.use(cors())
 app.use(morgan('combined'))
 app.use(express.json())
 
-const mysqlConnector = mysql.createConnection({
-  host: process.env.NODE_ENV === 'production' ? 'ps_mysql' : 'localhost',
-  port: 3306,
-  user: 'root',
-  password: 'quizz',
-  database: 'quizz',
-})
+const databaseInfo = {
+  host: process.env.DATABASE_HOST,
+  port: process.env.DATABASE_PORT,
+  user: process.env.DATABASE_USER,
+  password: process.env.DATABASE_PASSWORD,
+  database: process.env.DATABASE_DB,
+}
+
+const mysqlConnector = mysql.createConnection(databaseInfo)
 
 mysqlConnector.connect((err) => {
   if (err) throw err
@@ -71,4 +72,12 @@ app.get('/exams', async (req, res) => {
   }
 })
 
-app.listen(port, () => console.log('Server is running'))
+app.get('/test', async (req, res) => {
+  try {
+    res.json(databaseInfo)
+  } catch (error) {
+    res.json(error)
+  }
+})
+
+app.listen(process.env.PORT, () => console.log('Server is running'))
