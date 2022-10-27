@@ -1,3 +1,4 @@
+import { t } from "i18next";
 import { FormProvider, useForm } from "react-hook-form";
 import Question, { QUESTION_TYPE } from "./components/Question";
 
@@ -89,26 +90,36 @@ const data = {
 const Detail = () => {
   const method = useForm();
   const onSubmit = (data: any) => console.log(data);
+
   return (
     <FormProvider {...method}>
-      <form onSubmit={method.handleSubmit(onSubmit)}>
-        <Styled.DetailContainer>
-          {data.questions.map((i) => (
-            <Question
-              key={i.id}
-              questionId={i.id.toString()}
-              type={i.type as QUESTION_TYPE}
-              title={i.title}
-              option_1={i.option_1}
-              option_2={i.option_2}
-              option_3={i.option_3}
-              option_4={i.option_4}
-              no={1}
-            />
-          ))}
-        </Styled.DetailContainer>
-        <button type="submit">Submit</button>
-      </form>
+      <Styled.FormContainer onSubmit={method.handleSubmit(onSubmit)}>
+        {/* <Styled.DetailContainer> */}
+        <Styled.TestName>{data.name}</Styled.TestName>
+        <Styled.TestDescription>{data.description}</Styled.TestDescription>
+        {data.questions.map((i, index) => (
+          <Question
+            key={i.id}
+            questionId={i.id.toString()}
+            type={i.type as QUESTION_TYPE}
+            title={i.title}
+            option_1={i.option_1}
+            option_2={i.option_2}
+            option_3={i.option_3}
+            option_4={i.option_4}
+            no={index + 1}
+          />
+        ))}
+        {/* </Styled.DetailContainer> */}
+        <Styled.ButtonContainer>
+          <Styled.ReworkButton type="button">
+            {t("detail.retest")}
+          </Styled.ReworkButton>
+          <Styled.SubmitButton type="submit">
+            {t("detail.submit")}
+          </Styled.SubmitButton>
+        </Styled.ButtonContainer>
+      </Styled.FormContainer>
     </FormProvider>
   );
 };

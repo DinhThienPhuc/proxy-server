@@ -17,7 +17,10 @@
       "filter_placeholder_search": "Test's name"
     },
     "detail": {
-      "question_no": "Question" 
+      "question_no": "Question",
+      "missing_text": "Missing Text",
+      "submit": "Submit",
+      "retest": "Re-test"
     }
   }
 }

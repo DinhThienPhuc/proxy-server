@@ -94,6 +94,25 @@ const MultiChoice = ({
   );
 };
 
+const MissingText = ({
+  options,
+  questionId,
+  onChange,
+}: QuestionChoiceProps) => {
+  const { t } = useTranslation();
+  const handleChange = (value: string) => {
+    onChange?.(questionId as string, value);
+  };
+
+  return (
+    <Styled.InputText
+      name={questionId}
+      placeholder={t("detail.missing_text")}
+      onChange={(e) => handleChange(e.target.value)}
+    />
+  );
+};
+
 const Question = (props: Props) => {
   const { setValue } = useFormContext();
   const { t } = useTranslation();
@@ -127,7 +146,9 @@ const Question = (props: Props) => {
           />
         );
       case QUESTION_TYPE.FILL_MISSING_TEXT:
-        return;
+        return (
+          <MissingText onChange={setValue} questionId={props.questionId} />
+        );
       default:
         return null;
     }

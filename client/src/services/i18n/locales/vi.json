@@ -17,7 +17,10 @@
       "filter_placeholder_search": "Tên bài thi"
     },
     "detail": {
-      "question_no": "Câu hỏi" 
+      "question_no": "Câu hỏi",
+      "missing_text": "Từ còn thiếu",
+      "submit": "Nộp bài",
+      "retest": "Làm lại"
     }
   }
 }

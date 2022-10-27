@@ -44,9 +44,9 @@ const AuthRoute = ({ children }: IAuthRouteProps) => {
    * Handle case when user is NOT authenticated but attemp to access Privated page
    * -> redirect to Login page
    */
-  // if (!isAuthenticated && location.pathname !== ROUTES.login) {
-  //   return <Navigate to={ROUTES.login} />;
-  // }
+  if (!isAuthenticated && location.pathname !== ROUTES.login) {
+    return <Navigate to={ROUTES.login} />;
+  }
 
   /**
    * Otherwise access Page as normal
