@@ -25,7 +25,7 @@ const AuthRoute = ({ children }: IAuthRouteProps) => {
    */
   const [refreshToken] = useSessionStorage<string | null>(
     "refresh-token",
-    null
+    null,
   );
 
   const isAuthenticated = useMemo(() => {

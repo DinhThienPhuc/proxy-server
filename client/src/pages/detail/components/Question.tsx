@@ -1,4 +1,4 @@
-import { Box, Checkbox } from "@mui/material";
+import { Box, Checkbox, FormControlLabel, Radio } from "@mui/material";
 import { FieldValues, UseFormSetValue, useFormContext } from "react-hook-form";
 import React, { useState } from "react";
 
@@ -19,19 +19,23 @@ interface Props extends QuestionProps {
 interface QuestionProps {
   no?: number;
   title?: string;
-  option_1?: string;
-  option_2?: string;
-  option_3?: string;
-  option_4?: string;
+  option_1?: string | null;
+  option_2?: string | null;
+  option_3?: string | null;
+  option_4?: string | null;
 }
 
-interface SingleChoiceProps {
+interface QuestionChoiceProps {
   options?: string[];
   questionId?: string;
   onChange?: UseFormSetValue<FieldValues>;
 }
 
-const MultiChoice = ({ options, questionId, onChange }: SingleChoiceProps) => {
+const SingleChoice = ({
+  options,
+  questionId,
+  onChange,
+}: QuestionChoiceProps) => {
   const [valueState, setValueState] = useState<string[]>([]);
   if (!options) return <></>;
 
@@ -61,6 +65,54 @@ const MultiChoice = ({ options, questionId, onChange }: SingleChoiceProps) => {
   );
 };
 
+const MultiChoice = ({
+  options,
+  questionId,
+  onChange,
+}: QuestionChoiceProps) => {
+  const [valueState, setValueState] = useState<string[]>([]);
+  if (!options) return <></>;
+
+  const handleChange = (value: any) => {
+    onChange?.(questionId as string, value);
+  };
+
+  return (
+    <Styled.RadioGroupContainer
+      name={questionId}
+      onChange={(e) => handleChange(e.target.value)}
+    >
+      {options?.map((item, index) => (
+        <FormControlLabel
+          key={index}
+          value={item}
+          control={<Radio />}
+          label={item}
+        />
+      ))}
+    </Styled.RadioGroupContainer>
+  );
+};
+
+const MissingText = ({
+  options,
+  questionId,
+  onChange,
+}: QuestionChoiceProps) => {
+  const { t } = useTranslation();
+  const handleChange = (value: string) => {
+    onChange?.(questionId as string, value);
+  };
+
+  return (
+    <Styled.InputText
+      name={questionId}
+      placeholder={t("detail.missing_text")}
+      onChange={(e) => handleChange(e.target.value)}
+    />
+  );
+};
+
 const Question = (props: Props) => {
   const { setValue } = useFormContext();
   const { t } = useTranslation();
@@ -68,7 +120,18 @@ const Question = (props: Props) => {
   const renderTypeQuestion = () => {
     switch (props.type) {
       case QUESTION_TYPE.SINGLE_CHOICE:
-        return;
+        return (
+          <SingleChoice
+            onChange={setValue}
+            questionId={props.questionId}
+            options={[
+              props?.option_1 || "",
+              props?.option_2 || "",
+              props?.option_3 || "",
+              props?.option_4 || "",
+            ]}
+          />
+        );
       case QUESTION_TYPE.MULTIPLE_CHOICE:
         return (
           <MultiChoice
@@ -83,7 +146,9 @@ const Question = (props: Props) => {
           />
         );
       case QUESTION_TYPE.FILL_MISSING_TEXT:
-        return;
+        return (
+          <MissingText onChange={setValue} questionId={props.questionId} />
+        );
       default:
         return null;
     }
