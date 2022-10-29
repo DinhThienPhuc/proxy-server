@@ -1,11 +1,11 @@
 /* PAGE: HOME
    ========================================================================== */
 
+import { InputAdornment, Pagination } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
 
 import ExamCard from "./components/ExamCard";
 import { ExamItem } from "api/post/post.interface";
-import { InputAdornment, Pagination } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import Styled from "./index.style";
 import { getListExams } from "api/post/post.api";
