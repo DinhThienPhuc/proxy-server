@@ -81,14 +81,14 @@ INSERT INTO `exams_questions` (`id`, `exam_id`, `question_id`) VALUES (9, 1, 9);
 INSERT INTO `exams_questions` (`id`, `exam_id`, `question_id`) VALUES (10, 1, 10);
 INSERT INTO `exams_questions` (`id`, `exam_id`, `question_id`) VALUES (11, 2, 1);
 INSERT INTO `exams_questions` (`id`, `exam_id`, `question_id`) VALUES (12, 2, 3);
-INSERT INTO `exams_questions` (`id`, `exam_id`, `question_id`) VALUES (13, 2, 5);
+INSERT INTO `exams_questions` (`id`, `exam_id`, `question_id`) VALUES (13, 2, 4);
 INSERT INTO `exams_questions` (`id`, `exam_id`, `question_id`) VALUES (14, 2, 7);
-INSERT INTO `exams_questions` (`id`, `exam_id`, `question_id`) VALUES (15, 2, 9);
-INSERT INTO `exams_questions` (`id`, `exam_id`, `question_id`) VALUES (16, 2, 11);
+INSERT INTO `exams_questions` (`id`, `exam_id`, `question_id`) VALUES (15, 2, 8);
+INSERT INTO `exams_questions` (`id`, `exam_id`, `question_id`) VALUES (16, 2, 12);
 INSERT INTO `exams_questions` (`id`, `exam_id`, `question_id`) VALUES (17, 2, 13);
-INSERT INTO `exams_questions` (`id`, `exam_id`, `question_id`) VALUES (18, 2, 15);
-INSERT INTO `exams_questions` (`id`, `exam_id`, `question_id`) VALUES (19, 2, 17);
-INSERT INTO `exams_questions` (`id`, `exam_id`, `question_id`) VALUES (20, 2, 19);
+INSERT INTO `exams_questions` (`id`, `exam_id`, `question_id`) VALUES (18, 2, 14);
+INSERT INTO `exams_questions` (`id`, `exam_id`, `question_id`) VALUES (19, 2, 20);
+INSERT INTO `exams_questions` (`id`, `exam_id`, `question_id`) VALUES (20, 2, 21);
 COMMIT;
 
 -- ----------------------------
@@ -158,59 +158,39 @@ INSERT INTO `users` (`id`, `first_name`, `last_name`, `email`, `description`, `g
 COMMIT;
 
 -- ----------------------------
--- Table structure for users_exams
+-- Table structure for users_exams_questions
 -- ----------------------------
-DROP TABLE IF EXISTS `users_exams`;
-CREATE TABLE `users_exams` (
+DROP TABLE IF EXISTS `users_exams_questions`;
+CREATE TABLE `users_exams_questions` (
   `id` int NOT NULL AUTO_INCREMENT,
   `user_id` int DEFAULT NULL,
   `exam_id` int DEFAULT NULL,
-  `score` text DEFAULT NULL,
+  `question_id` int DEFAULT NULL,
+  `user_answer` text,
+  `exam_score` text,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `exam_id` (`exam_id`),
-  CONSTRAINT `users_exams_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
-  CONSTRAINT `users_exams_ibfk_2` FOREIGN KEY (`exam_id`) REFERENCES `exams` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
-
--- ----------------------------
--- Records of users_exams
--- ----------------------------
-BEGIN;
-INSERT INTO `users_exams` (`id`, `user_id`, `exam_id`, `score`) VALUES (1, 123456, 1, '60/100');
-INSERT INTO `users_exams` (`id`, `user_id`, `exam_id`, `score`) VALUES (2, 123456, 2, '85/100');
-INSERT INTO `users_exams` (`id`, `user_id`, `exam_id`, `score`) VALUES (3, 123456, 3, '60/100');
-INSERT INTO `users_exams` (`id`, `user_id`, `exam_id`, `score`) VALUES (4, 123456, 4, NULL);
-INSERT INTO `users_exams` (`id`, `user_id`, `exam_id`, `score`) VALUES (5, 123456, 5, NULL);
-COMMIT;
-
--- ----------------------------
--- Table structure for users_questions
--- ----------------------------
-DROP TABLE IF EXISTS `users_questions`;
-CREATE TABLE `users_questions` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `user_id` int DEFAULT NULL,
-  `question_id` int DEFAULT NULL,
-  `user_answer` text,
-  PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`),
   KEY `question_id` (`question_id`),
-  CONSTRAINT `users_questions_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
-  CONSTRAINT `users_questions_ibfk_2` FOREIGN KEY (`question_id`) REFERENCES `questions` (`id`)
+  CONSTRAINT `users_exams_questions_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  CONSTRAINT `users_exams_questions_ibfk_2` FOREIGN KEY (`exam_id`) REFERENCES `exams` (`id`),
+  CONSTRAINT `users_exams_questions_ibfk_3` FOREIGN KEY (`question_id`) REFERENCES `questions` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
--- Records of users_exams
+-- Records of users_exams_questions
 -- ----------------------------
 BEGIN;
-INSERT INTO `users_questions` (`id`, `user_id`, `question_id`, `user_answer`) VALUES (1, 123456, 1, "2::3");
-INSERT INTO `users_questions` (`id`, `user_id`, `question_id`, `user_answer`) VALUES (2, 123456, 2, "1");
-INSERT INTO `users_questions` (`id`, `user_id`, `question_id`, `user_answer`) VALUES (3, 123456, 3, "up");
-INSERT INTO `users_questions` (`id`, `user_id`, `question_id`, `user_answer`) VALUES (4, 123456, 4, "4::2");
-INSERT INTO `users_questions` (`id`, `user_id`, `question_id`, `user_answer`) VALUES (5, 123456, 5, "2");
-INSERT INTO `users_questions` (`id`, `user_id`, `question_id`, `user_answer`) VALUES (6, 123456, 6, "with");
-INSERT INTO `users_questions` (`id`, `user_id`, `question_id`, `user_answer`) VALUES (7, 123456, 7, "4::3::2");
+INSERT INTO `users_exams_questions` (`id`, `user_id`, `exam_id`, `question_id`, `user_answer`, `exam_score`) VALUES (1, 123456, 1, 1, "2::3", "80/100");
+INSERT INTO `users_exams_questions` (`id`, `user_id`, `exam_id`, `question_id`, `user_answer`, `exam_score`) VALUES (2, 123456, 1, 2, "1", "80/100");
+INSERT INTO `users_exams_questions` (`id`, `user_id`, `exam_id`, `question_id`, `user_answer`, `exam_score`) VALUES (3, 123456, 1, 3, "up", "80/100");
+INSERT INTO `users_exams_questions` (`id`, `user_id`, `exam_id`, `question_id`, `user_answer`, `exam_score`) VALUES (4, 123456, 1, 4, "4::2", "80/100");
+INSERT INTO `users_exams_questions` (`id`, `user_id`, `exam_id`, `question_id`, `user_answer`, `exam_score`) VALUES (5, 123456, 1, 5, "2", "80/100");
+INSERT INTO `users_exams_questions` (`id`, `user_id`, `exam_id`, `question_id`, `user_answer`, `exam_score`) VALUES (6, 123456, 1, 6, "with", "80/100");
+INSERT INTO `users_exams_questions` (`id`, `user_id`, `exam_id`, `question_id`, `user_answer`, `exam_score`) VALUES (7, 123456, 1, 7, "4::3::2", "80/100");
+INSERT INTO `users_exams_questions` (`id`, `user_id`, `exam_id`, `question_id`, `user_answer`, `exam_score`) VALUES (8, 123456, 1, 8, "7", "80/100");
+INSERT INTO `users_exams_questions` (`id`, `user_id`, `exam_id`, `question_id`, `user_answer`, `exam_score`) VALUES (9, 123456, 1, 9, "meo", "80/100");
+INSERT INTO `users_exams_questions` (`id`, `user_id`, `exam_id`, `question_id`, `user_answer`, `exam_score`) VALUES (10, 123456, 1, 10, "7::8", "80/100");
 COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;
