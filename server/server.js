@@ -33,12 +33,12 @@ app.post('/exams/:id', async (req, res) => {
   try {
     const examData = await queryPromise(
       mysqlConnector,
-      `SELECT * FROM users_exams_questions WHERE user_id=${FAKE_USER_ID} AND exam_id=${req.params.id} LIMIT 1`
+      `SELECT * FROM users_exams_questions WHERE users_exams_questions.user_id=${FAKE_USER_ID} AND users_exams_questions.exam_id=${req.params.id} LIMIT 1`
     )
     if (examData.length) {
       await queryPromise(
         mysqlConnector,
-        `DELETE FROM users_exams_questions WHERE user_id=${FAKE_USER_ID} AND exam_id=${req.params.id}`
+        `DELETE FROM users_exams_questions WHERE users_exams_questions.user_id=${FAKE_USER_ID} AND users_exams_questions.exam_id=${req.params.id}`
       )
     }
     // TODO: cham diem
@@ -46,12 +46,14 @@ app.post('/exams/:id', async (req, res) => {
     //   mysqlConnector,
     //   `SELECT * FROM questions INNER JOIN exams ON exams.id=${req.params.id} INNER JOIN users_questions ON users_questions.question_id=questions.id`
     // )
-    // const parsedQuestionAnswers = Object.keys(req.body).map((questionId) => {
-    //   return `('${FAKE_USER_ID}', '${req.params.id}', '${questionId}', '${
-    //     req.body[questionId] || ''
-    //   }', '69/100')`
-    // })
+    const score = '70/100'
     // TODO: create a calculate-score function
+    const parsedQuestionAnswers = Object.keys(req.body).map((questionId) => {
+      return `('${FAKE_USER_ID}', '${req.params.id}', '${questionId}', '${
+        req.body[questionId] || ''
+      }', '${score}')`
+    })
+
     await queryPromise(
       mysqlConnector,
       `INSERT INTO users_exams_questions (user_id, exam_id, question_id, user_answer, exam_score) VALUES ${parsedQuestionAnswers}`
@@ -93,7 +95,7 @@ app.get('/exams', async (req, res) => {
     const listExams = await queryPromise(mysqlConnector, `SELECT * FROM exams`)
     const userExams = await queryPromise(
       mysqlConnector,
-      `SELECT DISTINCT users_exams_questions.exam_id, users_exams_questions.user_id, users_exams_questions.exam_score FROM users_exams_questions WHERE users_exams_questions.user_id=${FAKE_USER_ID}`
+      `SELECT DISTINCT * FROM users_exams_questions WHERE users_exams_questions.user_id=${FAKE_USER_ID}`
     )
     const result = listExams?.map((exam) => ({
       ...exam,
