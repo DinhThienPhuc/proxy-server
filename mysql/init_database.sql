@@ -50,46 +50,6 @@ INSERT INTO `exams` (`id`, `name`, `description`) VALUES (9, 'IELTS exam 9', 'Te
 INSERT INTO `exams` (`id`, `name`, `description`) VALUES (10, 'IELTS exam 10', 'Test ieltes');
 COMMIT;
 
--- ----------------------------
--- Table structure for exams_questions
--- ----------------------------
-DROP TABLE IF EXISTS `exams_questions`;
-CREATE TABLE `exams_questions` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `exam_id` int DEFAULT NULL,
-  `question_id` int DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `exam_id` (`exam_id`),
-  KEY `question_id` (`question_id`),
-  CONSTRAINT `exams_questions_ibfk_1` FOREIGN KEY (`exam_id`) REFERENCES `exams` (`id`),
-  CONSTRAINT `exams_questions_ibfk_2` FOREIGN KEY (`question_id`) REFERENCES `questions` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3;
-
--- ----------------------------
--- Records of exams_questions
--- ----------------------------
-BEGIN;
-INSERT INTO `exams_questions` (`id`, `exam_id`, `question_id`) VALUES (1, 1, 1);
-INSERT INTO `exams_questions` (`id`, `exam_id`, `question_id`) VALUES (2, 1, 2);
-INSERT INTO `exams_questions` (`id`, `exam_id`, `question_id`) VALUES (3, 1, 3);
-INSERT INTO `exams_questions` (`id`, `exam_id`, `question_id`) VALUES (4, 1, 4);
-INSERT INTO `exams_questions` (`id`, `exam_id`, `question_id`) VALUES (5, 1, 5);
-INSERT INTO `exams_questions` (`id`, `exam_id`, `question_id`) VALUES (6, 1, 6);
-INSERT INTO `exams_questions` (`id`, `exam_id`, `question_id`) VALUES (7, 1, 7);
-INSERT INTO `exams_questions` (`id`, `exam_id`, `question_id`) VALUES (8, 1, 8);
-INSERT INTO `exams_questions` (`id`, `exam_id`, `question_id`) VALUES (9, 1, 9);
-INSERT INTO `exams_questions` (`id`, `exam_id`, `question_id`) VALUES (10, 1, 10);
-INSERT INTO `exams_questions` (`id`, `exam_id`, `question_id`) VALUES (11, 2, 1);
-INSERT INTO `exams_questions` (`id`, `exam_id`, `question_id`) VALUES (12, 2, 3);
-INSERT INTO `exams_questions` (`id`, `exam_id`, `question_id`) VALUES (13, 2, 4);
-INSERT INTO `exams_questions` (`id`, `exam_id`, `question_id`) VALUES (14, 2, 7);
-INSERT INTO `exams_questions` (`id`, `exam_id`, `question_id`) VALUES (15, 2, 8);
-INSERT INTO `exams_questions` (`id`, `exam_id`, `question_id`) VALUES (16, 2, 12);
-INSERT INTO `exams_questions` (`id`, `exam_id`, `question_id`) VALUES (17, 2, 13);
-INSERT INTO `exams_questions` (`id`, `exam_id`, `question_id`) VALUES (18, 2, 14);
-INSERT INTO `exams_questions` (`id`, `exam_id`, `question_id`) VALUES (19, 2, 20);
-INSERT INTO `exams_questions` (`id`, `exam_id`, `question_id`) VALUES (20, 2, 21);
-COMMIT;
 
 -- ----------------------------
 -- Table structure for questions
@@ -133,6 +93,7 @@ INSERT INTO `questions` (`id`, `title`, `type`, `option_1`, `option_2`, `option_
 INSERT INTO `questions` (`id`, `title`, `type`, `option_1`, `option_2`, `option_3`, `option_4`, `answer`) VALUES (20, 'Question 20', 'SINGLE_CHOICE', '4', '3', '3', '1', '1');
 INSERT INTO `questions` (`id`, `title`, `type`, `option_1`, `option_2`, `option_3`, `option_4`, `answer`) VALUES (21, 'Question 21', 'FILL_MISSING_TEXT', NULL, NULL, NULL, NULL, 'with');
 COMMIT;
+
 
 -- ----------------------------
 -- Table structure for users
