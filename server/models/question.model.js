@@ -1,8 +1,8 @@
 const { DataTypes } = require('sequelize')
 const sequelize = require('./init')
 
-const User = sequelize.define(
-  'User',
+const Question = sequelize.define(
+  'Question',
   {
     id: {
       type: DataTypes.INTEGER,
@@ -11,28 +11,32 @@ const User = sequelize.define(
       primaryKey: true,
       autoIncrement: true,
     },
-    firstName: {
+    title: {
+      type: DataTypes.STRING,
+      unique: true,
+    },
+    type: {
       type: DataTypes.STRING,
     },
-    lastName: {
+    option1: {
       type: DataTypes.STRING,
     },
-    description: {
+    option2: {
       type: DataTypes.STRING,
     },
-    email: {
+    option3: {
       type: DataTypes.STRING,
     },
-    gender: {
+    option4: {
       type: DataTypes.STRING,
     },
-    age: {
-      type: DataTypes.INTEGER,
+    answer: {
+      type: DataTypes.STRING,
     },
   },
   {
-    tableName: 'users',
+    tableName: 'questions',
   }
 )
 
-module.exports = User
+module.exports = Question
