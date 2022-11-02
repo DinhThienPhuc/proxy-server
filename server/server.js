@@ -3,6 +3,8 @@ const cors = require('cors')
 const morgan = require('morgan')
 const { models } = require('./models')
 const uniqBy = require('lodash/uniqBy')
+const Sequelize = require('sequelize')
+const { isAnswerForThisQuestionRight } = require('./utils')
 
 const app = express()
 
@@ -54,26 +56,58 @@ const FAKE_USER_ID = 123456
 
 app.get('/exams/:id', async (req, res) => {
   try {
-    const examInfo = await models.Exam.find({
-      where: { id: req.params.id },
-    })
-    // const listQuestions = await queryPromise(
-    //   mysqlConnector,
-    //   `SELECT * FROM questions INNER JOIN exams_questions ON exams_questions.exam_id = ${req.params.id} AND exams_questions.question_id=questions.id`
-    // )
-    const listQuestions = await models.Question.findAll({
+    const examInfo = await models.Exam.findOne({
       where: {
-        examId: req.params.id,
+        id: +req.params.id,
       },
-      include: [
-        {
-          model: models.Exam,
-          required: true,
-          right: true,
-          where: ['questionId = id'],
-        },
-      ],
     })
+
+    const listQuestions = await models.Question.findAll({
+      attributes: [
+        'id',
+        'title',
+        'type',
+        'option1',
+        'option2',
+        'option3',
+        'option4',
+        'answer',
+        'createdAt',
+        'updatedAt',
+      ],
+      include: {
+        model: models.UserExamQuestion,
+        attributes: ['userAnswer', 'examScore'],
+        where: {
+          questionId: Sequelize.col('Question.id'),
+          examId: +req.params.id,
+        },
+      },
+      include: {
+        model: models.Exam,
+        attributes: ['userAnswer', 'examScore'],
+        where: {
+          questionId: Sequelize.col('Question.id'),
+          examId: +req.params.id,
+        },
+      },
+    })
+
+    // TODO: re add exams_questions table
+
+    const result = listQuestions.map((questionData) => ({
+      id: questionData.id,
+      title: questionData.title,
+      type: questionData.type,
+      option1: questionData.option1,
+      option2: questionData.option2,
+      option3: questionData.option3,
+      option4: questionData.option4,
+      examScore: '80/100',
+      createdAt: '2022-11-02T14:23:41.000Z',
+      updatedAt: '2022-11-02T14:23:41.000Z',
+    }))
+
     // const examQuestions = await queryPromise(
     //   mysqlConnector,
     //   `SELECT DISTINCT questions.id, questions.title, questions.type, questions.option_1, questions.option_2, questions.option_3, questions.option_4, users_exams_questions.user_answer, users_exams_questions.exam_score FROM questions INNER JOIN users_exams_questions ON users_exams_questions.exam_id=${req.params.id}`
@@ -82,9 +116,10 @@ app.get('/exams/:id', async (req, res) => {
     //   ...(!!examInfo?.length ? examInfo?.[0] : {}),
     //   // questions: parseAnswerRightOrWrong(examQuestions),
     // })
+
     res.json(listQuestions)
   } catch (error) {
-    res.json(error)
+    res.json({ error })
   }
 })
 
