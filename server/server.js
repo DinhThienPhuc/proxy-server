@@ -2,6 +2,7 @@ const express = require('express')
 const cors = require('cors')
 const morgan = require('morgan')
 const { models } = require('./models')
+const uniqBy = require('lodash/uniqBy')
 
 const app = express()
 
@@ -12,6 +13,8 @@ app.use(morgan('combined'))
 app.use(express.json())
 
 const FAKE_USER_ID = 123456
+
+// TODO: apply redis later
 
 // app.post('/exams/:id', async (req, res) => {
 //   try {
@@ -49,44 +52,62 @@ const FAKE_USER_ID = 123456
 //   }
 // })
 
-// app.get('/exams/:id', async (req, res) => {
-//   try {
-//     const examInfo = await queryPromise(
-//       mysqlConnector,
-//       `SELECT * FROM exams WHERE exams.id=${req.params.id}`
-//     )
-//     const questions = await queryPromise(
-//       mysqlConnector,
-//       `SELECT * FROM questions INNER JOIN exams_questions ON exams_questions.exam_id = ${req.params.id} AND exams_questions.question_id=questions.id`
-//     )
-//     // const examQuestions = await queryPromise(
-//     //   mysqlConnector,
-//     //   `SELECT DISTINCT questions.id, questions.title, questions.type, questions.option_1, questions.option_2, questions.option_3, questions.option_4, users_exams_questions.user_answer, users_exams_questions.exam_score FROM questions INNER JOIN users_exams_questions ON users_exams_questions.exam_id=${req.params.id}`
-//     // )
-//     console.log('questions', questions)
-//     // res.json({
-//     //   ...(!!examInfo?.length ? examInfo?.[0] : {}),
-//     //   // questions: parseAnswerRightOrWrong(examQuestions),
-//     // })
-//     res.json(questions)
-//   } catch (error) {
-//     res.json(error)
-//   }
-// })
+app.get('/exams/:id', async (req, res) => {
+  try {
+    const examInfo = await models.Exam.find({
+      where: { id: req.params.id },
+    })
+    // const listQuestions = await queryPromise(
+    //   mysqlConnector,
+    //   `SELECT * FROM questions INNER JOIN exams_questions ON exams_questions.exam_id = ${req.params.id} AND exams_questions.question_id=questions.id`
+    // )
+    const listQuestions = await models.Question.findAll({
+      where: {
+        examId: req.params.id,
+      },
+      include: [
+        {
+          model: models.Exam,
+          required: true,
+          right: true,
+          where: ['questionId = id'],
+        },
+      ],
+    })
+    // const examQuestions = await queryPromise(
+    //   mysqlConnector,
+    //   `SELECT DISTINCT questions.id, questions.title, questions.type, questions.option_1, questions.option_2, questions.option_3, questions.option_4, users_exams_questions.user_answer, users_exams_questions.exam_score FROM questions INNER JOIN users_exams_questions ON users_exams_questions.exam_id=${req.params.id}`
+    // )
+    // res.json({
+    //   ...(!!examInfo?.length ? examInfo?.[0] : {}),
+    //   // questions: parseAnswerRightOrWrong(examQuestions),
+    // })
+    res.json(listQuestions)
+  } catch (error) {
+    res.json(error)
+  }
+})
 
 app.get('/exams', async (_, res) => {
   try {
     const listExams = await models.Exam.findAll()
-    // const listExams = await queryPromise(mysqlConnector, `SELECT * FROM exams`)
-    // const userExams = await queryPromise(
-    //   mysqlConnector,
-    //   `SELECT DISTINCT * FROM users_exams_questions WHERE users_exams_questions.user_id=${FAKE_USER_ID}`
-    // )
-    // const result = listExams?.map((exam) => ({
-    //   ...exam,
-    //   score: userExams?.find((e) => exam.id === e.exam_id)?.exam_score ?? null,
-    // }))
-    res.json(listExams)
+    const userExams = await models.UserExamQuestion.findAll({
+      where: { userId: FAKE_USER_ID },
+    })
+
+    const uniqUserExams = uniqBy(userExams, 'userId', 'examId')
+
+    const result = listExams?.map((exam) => ({
+      id: exam.id,
+      name: exam.name,
+      description: exam.description,
+      createdAt: exam.createdAt,
+      updatedAt: exam.updatedAt,
+      score:
+        uniqUserExams?.find((e) => exam.id === e.examId)?.examScore ?? null,
+    }))
+
+    res.json(result)
   } catch (error) {
     res.json(error)
   }
