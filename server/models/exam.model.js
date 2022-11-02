@@ -1,16 +1,27 @@
-import sequelize from '.'
+const { DataTypes } = require('sequelize')
+const sequelize = require('./init')
 
-const Exam = sequelize.define('Exam', {
-  id: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
+const Exam = sequelize.define(
+  'Exam',
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      unique: true,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    name: {
+      type: DataTypes.STRING,
+      unique: true,
+    },
+    description: {
+      type: DataTypes.STRING,
+    },
   },
-  name: {
-    type: DataTypes.STRING,
-  },
-  description: {
-    type: DataTypes.STRING,
-  },
-})
+  {
+    tableName: 'exams',
+  }
+)
 
-export default Exam
+module.exports = Exam
