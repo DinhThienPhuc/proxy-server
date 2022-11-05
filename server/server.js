@@ -66,6 +66,10 @@ const TYPE = {
 //   }
 // })
 
+app.post('/exams/:id', async (req, res) => {
+  res.json({ data: req.body })
+})
+
 app.get('/exams/:id', async (req, res) => {
   try {
     const examInfo = await models.Exam.findOne({
@@ -98,6 +102,14 @@ app.get('/exams/:id', async (req, res) => {
         (data) => data.questionId === questionData.id
       )
 
+      const isRight = userQuestionData?.userAnswer
+        ? isAnswerForThisQuestionRight(
+            questionData.type,
+            userQuestionData?.userAnswer,
+            questionData.answer
+          )
+        : false
+
       return {
         id: questionData.id,
         title: questionData.title,
@@ -109,11 +121,7 @@ app.get('/exams/:id', async (req, res) => {
         examScore: userQuestionData?.examScore || null,
         userAnswer: userQuestionData?.userAnswer || null,
         // answer: questionData.answer,
-        isRight: isAnswerForThisQuestionRight(
-          questionData.type,
-          userQuestionData?.userAnswer,
-          questionData.answer
-        ),
+        isRight,
         createdAt: questionData.createdAt,
         updatedAt: questionData.updatedAt,
       }
@@ -178,17 +186,6 @@ app.get('/init-data/users', async (_, res) => {
 app.get('/init-data/exams', async (_, res) => {
   try {
     const response = await models.Exam.bulkCreate(examsData)
-    res.json({
-      response,
-    })
-  } catch (error) {
-    res.json(error)
-  }
-})
-
-app.get('/init-data/exams-questions', async (_, res) => {
-  try {
-    const response = await models.ExamQuestion.bulkCreate(examsQuestionsData)
     res.json({
       response,
     })
