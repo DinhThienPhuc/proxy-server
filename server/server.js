@@ -4,7 +4,14 @@ const morgan = require('morgan')
 const { models } = require('./models')
 const uniqBy = require('lodash/uniqBy')
 const Sequelize = require('sequelize')
+const { sequelize } = require('./models')
 const { isAnswerForThisQuestionRight } = require('./utils')
+
+const questionsData = require('./database/questions.json')
+const usersData = require('./database/users.json')
+const examsData = require('./database/exams.json')
+const examsQuestionsData = require('./database/examsQuestions.json')
+const userExamsQuestionsData = require('./database/userExamsQuestions.json')
 
 const app = express()
 
@@ -14,7 +21,12 @@ app.use(cors())
 app.use(morgan('combined'))
 app.use(express.json())
 
-const FAKE_USER_ID = 123456
+const FAKE_USER_ID = 1000
+const TYPE = {
+  MULTIPLE_CHOICE: 'MULTIPLE_CHOICE',
+  SINGLE_CHOICE: 'SINGLE_CHOICE',
+  FILL_MISSING_TEXT: 'FILL_MISSING_TEXT',
+}
 
 // TODO: apply redis later
 
@@ -62,62 +74,52 @@ app.get('/exams/:id', async (req, res) => {
       },
     })
 
-    const listQuestions = await models.Question.findAll({
-      attributes: [
-        'id',
-        'title',
-        'type',
-        'option1',
-        'option2',
-        'option3',
-        'option4',
-        'answer',
-        'createdAt',
-        'updatedAt',
-      ],
-      include: {
-        model: models.UserExamQuestion,
-        attributes: ['userAnswer', 'examScore'],
-        where: {
-          questionId: Sequelize.col('Question.id'),
-          examId: +req.params.id,
-        },
-      },
-      include: {
-        model: models.Exam,
-        attributes: ['userAnswer', 'examScore'],
-        where: {
-          questionId: Sequelize.col('Question.id'),
-          examId: +req.params.id,
-        },
+    const listQuestionsOfExam = await models.ExamQuestion.findAll({
+      where: {
+        examId: +req.params.id,
       },
     })
 
-    // TODO: re add exams_questions table
+    listQuestionsWithDetailOfExam = await models.Question.findAll({
+      where: {
+        id: listQuestionsOfExam?.map((data) => data.questionId),
+      },
+    })
 
-    const result = listQuestions.map((questionData) => ({
-      id: questionData.id,
-      title: questionData.title,
-      type: questionData.type,
-      option1: questionData.option1,
-      option2: questionData.option2,
-      option3: questionData.option3,
-      option4: questionData.option4,
-      examScore: '80/100',
-      createdAt: '2022-11-02T14:23:41.000Z',
-      updatedAt: '2022-11-02T14:23:41.000Z',
-    }))
+    const listQuestionsOfUser = await models.UserExamQuestion.findAll({
+      where: {
+        examId: +req.params.id,
+        userId: FAKE_USER_ID,
+      },
+    })
 
-    // const examQuestions = await queryPromise(
-    //   mysqlConnector,
-    //   `SELECT DISTINCT questions.id, questions.title, questions.type, questions.option_1, questions.option_2, questions.option_3, questions.option_4, users_exams_questions.user_answer, users_exams_questions.exam_score FROM questions INNER JOIN users_exams_questions ON users_exams_questions.exam_id=${req.params.id}`
-    // )
-    // res.json({
-    //   ...(!!examInfo?.length ? examInfo?.[0] : {}),
-    //   // questions: parseAnswerRightOrWrong(examQuestions),
-    // })
+    const result = listQuestionsWithDetailOfExam.map((questionData) => {
+      const userQuestionData = listQuestionsOfUser?.find(
+        (data) => data.questionId === questionData.id
+      )
 
-    res.json(listQuestions)
+      return {
+        id: questionData.id,
+        title: questionData.title,
+        type: questionData.type,
+        a: questionData.a,
+        b: questionData.b,
+        c: questionData.c,
+        d: questionData.d,
+        examScore: userQuestionData?.examScore || null,
+        userAnswer: userQuestionData?.userAnswer || null,
+        // answer: questionData.answer,
+        isRight: isAnswerForThisQuestionRight(
+          questionData.type,
+          userQuestionData?.userAnswer,
+          questionData.answer
+        ),
+        createdAt: questionData.createdAt,
+        updatedAt: questionData.updatedAt,
+      }
+    })
+
+    res.json(result)
   } catch (error) {
     res.json({ error })
   }
@@ -148,12 +150,78 @@ app.get('/exams', async (_, res) => {
   }
 })
 
-app.get('/test', async (req, res) => {
+/**
+ * Start seeding database -----------------------------------------------------
+ */
+app.get('/init-data/questions', async (_, res) => {
   try {
-    res.json(databaseInfo)
+    const response = await models.Question.bulkCreate(questionsData)
+    res.json({
+      response,
+    })
   } catch (error) {
     res.json(error)
   }
 })
+
+app.get('/init-data/users', async (_, res) => {
+  try {
+    const response = await models.User.bulkCreate(usersData)
+    res.json({
+      response,
+    })
+  } catch (error) {
+    res.json(error)
+  }
+})
+
+app.get('/init-data/exams', async (_, res) => {
+  try {
+    const response = await models.Exam.bulkCreate(examsData)
+    res.json({
+      response,
+    })
+  } catch (error) {
+    res.json(error)
+  }
+})
+
+app.get('/init-data/exams-questions', async (_, res) => {
+  try {
+    const response = await models.ExamQuestion.bulkCreate(examsQuestionsData)
+    res.json({
+      response,
+    })
+  } catch (error) {
+    res.json(error)
+  }
+})
+
+app.get('/init-data/exams-questions', async (_, res) => {
+  try {
+    const response = await models.ExamQuestion.bulkCreate(examsQuestionsData)
+    res.json({
+      response,
+    })
+  } catch (error) {
+    res.json(error)
+  }
+})
+
+app.get('/init-data/users-exams-questions', async (_, res) => {
+  try {
+    const response = await models.UserExamQuestion.bulkCreate(
+      userExamsQuestionsData
+    )
+    res.json({
+      response,
+    })
+  } catch (error) {
+    res.json(error)
+  }
+})
+/**
+ * End seeding database -------------------------------------------------------
+ */
 
 app.listen(process.env.PORT, () => console.log('Server is running'))

@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1000,
+    "firstName": "Phuc",
+    "lastName": "Dinh",
+    "email": "thienphuc.bk14@gmail.com",
+    "description": "",
+    "gender": "male",
+    "age": 28
+  },
+  {
+    "id": 1001,
+    "firstName": "Tuyen",
+    "lastName": "Phung",
+    "email": "tuyenpc98@gmail.com",
+    "description": "",
+    "gender": "male",
+    "age": 24
+  }
+]

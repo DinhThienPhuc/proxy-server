@@ -18,16 +18,16 @@ const Question = sequelize.define(
     type: {
       type: DataTypes.STRING,
     },
-    option1: {
+    a: {
       type: DataTypes.STRING,
     },
-    option2: {
+    b: {
       type: DataTypes.STRING,
     },
-    option3: {
+    c: {
       type: DataTypes.STRING,
     },
-    option4: {
+    d: {
       type: DataTypes.STRING,
     },
     answer: {
