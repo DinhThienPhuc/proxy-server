@@ -1,0 +1,31 @@
+version: '3.8'
+
+volumes:
+  ps_mysql_data:
+
+networks:
+  ps_network:
+    driver: bridge
+
+services:
+  ps_mysql:
+    image: ps_mysql
+    container_name: ps_mysql
+    restart: always
+    build:
+      context: ./mysql
+      args:
+        - MYSQL_DATABASE=quizz
+        - MYSQL_USER=quizz
+        - MYSQL_PASSWORD=quizz
+        - MYSQL_ROOT_PASSWORD=quizz
+    environment:
+      - MYSQL_ROOT_PASSWORD=quizz
+    volumes:
+      - ps_mysql_data:/var/lib/mysql
+    expose:
+      - '3306'
+    ports:
+      - '3306:3306'
+    networks:
+      - ps_network

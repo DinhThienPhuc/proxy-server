@@ -11,14 +11,12 @@ const queryPromise = (mysqlConnector, sql) => {
 
 const difference = (arr1, arr2) => arr1.filter((x) => !arr2.includes(x))
 
-const isAnswerForThisQuestionRight = (question) => {
-  if (question.type === 'MULTIPLE_CHOICE') {
-    !difference(
-      question.answer?.split('::'),
-      question.UserExamQuestions.userAnswer?.split('::')
-    )?.length
+const isAnswerForThisQuestionRight = (type, userAnswer, answer) => {
+  if (type === 'MULTIPLE_CHOICE') {
+    console.log('answer, answer', answer, userAnswer)
+    !difference(answer?.split('::'), userAnswer?.split('::'))?.length
   }
-  return question.answer === question.UserExamQuestions.userAnswer
+  return answer === userAnswer
 }
 
 module.exports = {
