@@ -55,12 +55,17 @@ const SingleChoice = ({
 
   return (
     <>
-      {options?.map((item, index) => (
-        <Box key={index}>
-          <Checkbox onChange={(e) => handleChange(e.target.checked, item)} />
-          {item}
-        </Box>
-      ))}
+      {options?.map(
+        (item, index) =>
+          !!item && (
+            <Box key={index}>
+              <Checkbox
+                onChange={(e) => handleChange(e.target.checked, item)}
+              />
+              {item}
+            </Box>
+          ),
+      )}
     </>
   );
 };
@@ -82,14 +87,17 @@ const MultiChoice = ({
       name={questionId}
       onChange={(e) => handleChange(e.target.value)}
     >
-      {options?.map((item, index) => (
-        <FormControlLabel
-          key={index}
-          value={item}
-          control={<Radio />}
-          label={item}
-        />
-      ))}
+      {options?.map(
+        (item, index) =>
+          !!item && (
+            <FormControlLabel
+              key={index}
+              value={item}
+              control={<Radio />}
+              label={item}
+            />
+          ),
+      )}
     </Styled.RadioGroupContainer>
   );
 };

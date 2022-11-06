@@ -7,9 +7,11 @@ const Styled = {
     padding: 20px;
     border: 1px solid #cccccc;
     border-radius: 8px;
-    min-height: 200px;
+    min-height: 150px;
   `,
-  QuestionTitle: styled.div``,
+  QuestionTitle: styled.div`
+    word-break: break-all;
+  `,
   QuestionNo: styled.span`
     font-weight: 600;
   `,
