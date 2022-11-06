@@ -127,7 +127,10 @@ app.get('/exams/:id', async (req, res) => {
       }
     })
 
-    res.json(result)
+    res.json({
+      ...examInfo,
+      questions: result,
+    })
   } catch (error) {
     res.json({ error })
   }
