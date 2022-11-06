@@ -128,7 +128,9 @@ app.get('/exams/:id', async (req, res) => {
     })
 
     res.json({
-      ...examInfo,
+      id: examInfo.id,
+      name: examInfo.name,
+      description: examInfo.description,
       questions: result,
     })
   } catch (error) {
