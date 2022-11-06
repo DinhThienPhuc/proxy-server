@@ -20,6 +20,14 @@ export const getListExams = (): Promise<AxiosResponse<ExamItem[]>> => {
   return requestWithoutJwt.get<ExamItem[]>("/exams");
 };
 
+export const getDetailExams = ({
+  id,
+}: {
+  id?: string;
+}): Promise<AxiosResponse<any>> => {
+  return requestWithoutJwt.get<any>(`/exams/${id}`);
+};
+
 export const getDashboardData = (): Promise<AxiosResponse<any>> => {
   return requestWithoutJwt.get<any>("/dashboard");
 };
