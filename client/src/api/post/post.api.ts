@@ -11,11 +11,21 @@ export const getPosts = (): Promise<AxiosResponse<IPostListResponse>> => {
 };
 
 export const getPostById = (
-  id: string
+  id: string,
 ): Promise<AxiosResponse<IPostResponse>> => {
   return requestWithoutJwt.get<IPostResponse>(`/posts/${id}`);
 };
 
 export const getListExams = (): Promise<AxiosResponse<ExamItem[]>> => {
   return requestWithoutJwt.get<ExamItem[]>("/exams");
+};
+
+export const getDashboardData = (): Promise<AxiosResponse<any>> => {
+  return requestWithoutJwt.get<any>("/dashboard");
+};
+
+export const saveQuestionsForExam = (
+  payload: any,
+): Promise<AxiosResponse<any>> => {
+  return requestWithoutJwt.post<any>("/dashboard/create", { data: payload });
 };

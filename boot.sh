@@ -7,4 +7,4 @@ docker compose down
 docker rmi -f $(docker images -aq)
 
 # Re-run server and database
-docker compose -f docker-compose-without-client.yml up -d
+docker compose -f docker-compose-only-db.yml up -d
