@@ -84,8 +84,8 @@ const Navbar = () => {
         <NavLink to={"/posts"} style={activateLink()}>
           {t("navbar.posts")}
         </NavLink>
-        <NavLink to={"/about"} style={activateLink(true)}>
-          {t("navbar.about_us")}
+        <NavLink to={"/dashboard"} style={activateLink(true)}>
+          {t("Dashboard")}
         </NavLink>
       </div>
       <Styled.Right>

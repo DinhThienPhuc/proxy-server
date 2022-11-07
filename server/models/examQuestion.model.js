@@ -1,31 +1,21 @@
 const { DataTypes } = require('sequelize')
 const sequelize = require('./init')
-const Exam = require('./exam.model')
-const Question = require('./question.model')
 
 const ExamQuestion = sequelize.define(
   'ExamQuestion',
   {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
       allowNull: false,
       unique: true,
       primaryKey: true,
-      autoIncrement: true,
     },
     examId: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: Exam,
-        key: 'id',
-      },
+      type: DataTypes.UUID,
     },
     questionId: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: Question,
-        key: 'id',
-      },
+      type: DataTypes.UUID,
     },
   },
   {
