@@ -1,5 +1,5 @@
 const express = require("express");
-const models = require("../models");
+const { models } = require("../models");
 const router = express.Router();
 
 const questionsData = require("../database/questions.json");
