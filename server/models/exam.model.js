@@ -1,8 +1,8 @@
-const { DataTypes } = require('sequelize')
-const sequelize = require('./init')
+const { DataTypes } = require("sequelize");
+const sequelize = require("./init");
 
 const Exam = sequelize.define(
-  'Exam',
+  "Exam",
   {
     id: {
       type: DataTypes.UUID,
@@ -20,8 +20,8 @@ const Exam = sequelize.define(
     },
   },
   {
-    tableName: 'exams',
+    tableName: "exams",
   }
-)
+);
 
-module.exports = Exam
+module.exports = Exam;
