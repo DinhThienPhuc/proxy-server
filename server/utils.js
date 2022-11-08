@@ -19,7 +19,10 @@ const isAnswerForThisQuestionRight = (type, userAnswer, answer) => {
   return answer === userAnswer;
 };
 
+const FAKE_USER_ID = "7cd4ca79-e354-4978-af2b-6a1d19dd74bd";
+
 module.exports = {
   queryPromise,
   isAnswerForThisQuestionRight,
+  FAKE_USER_ID,
 };

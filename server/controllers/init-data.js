@@ -8,7 +8,7 @@ const examsData = require("../database/exams.json");
 
 router.get("/questions", async (_, res) => {
   try {
-    await models.Question.destroy();
+    await models.Question.truncate();
     const response = await models.Question.bulkCreate(questionsData);
     res.json({
       response,
@@ -20,7 +20,7 @@ router.get("/questions", async (_, res) => {
 
 router.get("/exams", async (_, res) => {
   try {
-    await models.Exam.destroy();
+    await models.Exam.truncate();
     const response = await models.Exam.bulkCreate(examsData);
     res.json({
       response,
@@ -32,7 +32,7 @@ router.get("/exams", async (_, res) => {
 
 router.get("/users", async (_, res) => {
   try {
-    await models.User.destroy();
+    await models.User.truncate();
     const response = await models.User.bulkCreate(usersData);
     res.json({
       response,
