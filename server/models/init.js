@@ -1,4 +1,5 @@
-const { Sequelize } = require('sequelize')
+/* eslint-disable no-undef */
+const { Sequelize } = require("sequelize");
 
 const databaseInfo = {
   host: process.env.DATABASE_HOST,
@@ -6,7 +7,7 @@ const databaseInfo = {
   user: process.env.DATABASE_USER,
   password: process.env.DATABASE_PASSWORD,
   database: process.env.DATABASE_DB,
-}
+};
 
 const sequelize = new Sequelize(
   databaseInfo.database,
@@ -14,9 +15,9 @@ const sequelize = new Sequelize(
   databaseInfo.password,
   {
     host: databaseInfo.host,
-    dialect: 'mysql',
+    dialect: "mysql",
     port: databaseInfo.port,
   }
-)
+);
 
-module.exports = sequelize
+module.exports = sequelize;
