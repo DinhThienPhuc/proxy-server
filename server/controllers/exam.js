@@ -2,11 +2,11 @@ const express = require("express");
 const { models } = require("../models");
 const uniqBy = require("lodash/uniqBy");
 const Sequelize = require("sequelize");
-const { isAnswerForThisQuestionRight } = require("../utils");
+const { isAnswerForThisQuestionRight, FAKE_USER_ID } = require("../utils");
 
 const router = express.Router();
 
-const FAKE_USER_ID = "7cd4ca79-e354-4978-af2b-6a1d19dd74bd"; // TOOD: remove later
+// TOOD: remove later
 
 router.get("/:id", async (req, res) => {
   try {

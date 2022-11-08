@@ -29,6 +29,9 @@ const User = sequelize.define(
     age: {
       type: DataTypes.INTEGER,
     },
+    password: {
+      type: DataTypes.STRING,
+    },
   },
   {
     tableName: "users",
