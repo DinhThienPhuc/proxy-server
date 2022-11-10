@@ -88,16 +88,17 @@ const Home = () => {
         </Styled.FilterDropdown>
       </Styled.FilterContainer>
       <Styled.ListExams>
-        {dataState.map((item, index) => (
-          <ExamCard
-            name={item.name}
-            description={item.description}
-            key={index}
-            score={item.score}
-            id={item.id}
-            status={item.status}
-          />
-        ))}
+        {!!dataState &&
+          dataState?.map((item, index) => (
+            <ExamCard
+              name={item.name}
+              description={item.description}
+              key={index}
+              score={item.score}
+              id={item.id}
+              status={item.score ? "tested" : "pending"}
+            />
+          ))}
       </Styled.ListExams>
       <Styled.PaginationContainer>
         <Pagination count={page} />

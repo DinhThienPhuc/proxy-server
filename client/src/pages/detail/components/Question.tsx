@@ -25,13 +25,18 @@ interface QuestionProps {
   option_4?: string | null;
 }
 
+interface OptionObj {
+  label?: string | number;
+  value?: string | number;
+}
+
 interface QuestionChoiceProps {
-  options?: string[];
+  options?: OptionObj[];
   questionId?: string;
   onChange?: UseFormSetValue<FieldValues>;
 }
 
-const SingleChoice = ({
+const MultiChoice = ({
   options,
   questionId,
   onChange,
@@ -39,7 +44,7 @@ const SingleChoice = ({
   const [valueState, setValueState] = useState<string[]>([]);
   if (!options) return <></>;
 
-  const handleChange = (flag: boolean, value: string) => {
+  const handleChange = (flag: boolean, value?: string | number) => {
     const cloneState = JSON.parse(JSON.stringify(valueState));
 
     if (flag) {
@@ -55,17 +60,22 @@ const SingleChoice = ({
 
   return (
     <>
-      {options?.map((item, index) => (
-        <Box key={index}>
-          <Checkbox onChange={(e) => handleChange(e.target.checked, item)} />
-          {item}
-        </Box>
-      ))}
+      {options?.map(
+        (item, index) =>
+          !!item?.value && (
+            <Box key={index}>
+              <Checkbox
+                onChange={(e) => handleChange(e.target.checked, item?.label)}
+              />
+              {item?.value}
+            </Box>
+          ),
+      )}
     </>
   );
 };
 
-const MultiChoice = ({
+const SingleChoice = ({
   options,
   questionId,
   onChange,
@@ -73,7 +83,7 @@ const MultiChoice = ({
   const [valueState, setValueState] = useState<string[]>([]);
   if (!options) return <></>;
 
-  const handleChange = (value: any) => {
+  const handleChange = (value?: string | number) => {
     onChange?.(questionId as string, value);
   };
 
@@ -82,23 +92,22 @@ const MultiChoice = ({
       name={questionId}
       onChange={(e) => handleChange(e.target.value)}
     >
-      {options?.map((item, index) => (
-        <FormControlLabel
-          key={index}
-          value={item}
-          control={<Radio />}
-          label={item}
-        />
-      ))}
+      {options?.map(
+        (item, index) =>
+          !!item?.value && (
+            <FormControlLabel
+              key={index}
+              value={item?.label}
+              control={<Radio />}
+              label={item?.value}
+            />
+          ),
+      )}
     </Styled.RadioGroupContainer>
   );
 };
 
-const MissingText = ({
-  options,
-  questionId,
-  onChange,
-}: QuestionChoiceProps) => {
+const MissingText = ({ questionId, onChange }: QuestionChoiceProps) => {
   const { t } = useTranslation();
   const handleChange = (value: string) => {
     onChange?.(questionId as string, value);
@@ -125,10 +134,10 @@ const Question = (props: Props) => {
             onChange={setValue}
             questionId={props.questionId}
             options={[
-              props?.option_1 || "",
-              props?.option_2 || "",
-              props?.option_3 || "",
-              props?.option_4 || "",
+              { value: props?.option_1 || "", label: "a" },
+              { value: props?.option_2 || "", label: "b" },
+              { value: props?.option_3 || "", label: "c" },
+              { value: props?.option_4 || "", label: "d" },
             ]}
           />
         );
@@ -138,10 +147,10 @@ const Question = (props: Props) => {
             onChange={setValue}
             questionId={props.questionId}
             options={[
-              props?.option_1 || "",
-              props?.option_2 || "",
-              props?.option_3 || "",
-              props?.option_4 || "",
+              { value: props?.option_1 || "", label: "a" },
+              { value: props?.option_2 || "", label: "b" },
+              { value: props?.option_3 || "", label: "c" },
+              { value: props?.option_4 || "", label: "d" },
             ]}
           />
         );

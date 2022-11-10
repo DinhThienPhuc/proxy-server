@@ -1,120 +1,86 @@
+import { getDetailExams } from "api/post/post.api";
 import { t } from "i18next";
+import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import { useParams } from "react-router-dom";
 import Question, { QUESTION_TYPE } from "./components/Question";
-
 import Styled from "./index.style";
-const data = {
-  id: 1,
-  name: "IELTS exam 1",
-  description: "Test ieltes",
-  questions: [
-    {
-      id: 1,
-      title: "Question 1",
-      type: "MULTIPLE_CHOICE",
-      option_1: "1",
-      option_2: "2",
-      option_3: "3",
-      option_4: "4",
-      is_this_answer_right: false,
-      question_id: 1,
-    },
-    {
-      id: 2,
-      title: "Question 2",
-      type: "SINGLE_CHOICE",
-      option_1: "4",
-      option_2: "3",
-      option_3: "3",
-      option_4: "1",
-      is_this_answer_right: true,
-      question_id: 1,
-    },
-    {
-      id: 3,
-      title: "Question 3",
-      type: "FILL_MISSING_TEXT",
-      option_1: null,
-      option_2: null,
-      option_3: null,
-      option_4: null,
-      is_this_answer_right: false,
-      question_id: 1,
-    },
-    {
-      id: 4,
-      title: "Question 4",
-      type: "MULTIPLE_CHOICE",
-      option_1: "1",
-      option_2: "2",
-      option_3: "3",
-      option_4: "4",
-      is_this_answer_right: true,
-      question_id: 1,
-    },
-    {
-      id: 5,
-      title: "Question 5",
-      type: "SINGLE_CHOICE",
-      option_1: "4",
-      option_2: "3",
-      option_3: "3",
-      option_4: "1",
-      is_this_answer_right: false,
-      question_id: 1,
-    },
-    {
-      id: 6,
-      title: "Question 6",
-      type: "FILL_MISSING_TEXT",
-      option_1: null,
-      option_2: null,
-      option_3: null,
-      option_4: null,
-      is_this_answer_right: true,
-      question_id: 1,
-    },
-    {
-      id: 7,
-      title: "Question 7",
-      type: "MULTIPLE_CHOICE",
-      option_1: "1",
-      option_2: "2",
-      option_3: "3",
-      option_4: "4",
-      is_this_answer_right: true,
-      question_id: 1,
-    },
-  ],
-};
+
+export interface Question {
+  a: string | null;
+  b: string | null;
+  c: string | null;
+  createdAt: string;
+  d: string | null;
+  examScore: string;
+  id: string;
+  isRight: boolean;
+  title: string;
+  type: string;
+  updatedAt: string;
+  userAnswer: string;
+}
+
+export interface Detail {
+  description?: string;
+  id?: string;
+  name?: string;
+  examScore?: string | number;
+  questions?: Question[];
+}
+
 const Detail = () => {
   const method = useForm();
+  const params = useParams();
+  const [data, setData] = useState<Detail>({} as Detail);
+
   const onSubmit = (data: any) => console.log(data);
+
+  const getData = async (id?: string) => {
+    try {
+      const listExamsResponse = await getDetailExams({ id: id });
+      if (listExamsResponse?.data) {
+        setData(listExamsResponse?.data);
+      } else setData({} as Detail);
+    } catch (e) {
+      console.log("error", e);
+    }
+  };
+
+  useEffect(() => {
+    if (params?.id) {
+      getData(params?.id);
+      return;
+    }
+  }, [params?.id]);
 
   return (
     <FormProvider {...method}>
       <Styled.FormContainer onSubmit={method.handleSubmit(onSubmit)}>
         {/* <Styled.DetailContainer> */}
-        <Styled.TestName>{data.name}</Styled.TestName>
-        <Styled.TestDescription>{data.description}</Styled.TestDescription>
-        {data.questions.map((i, index) => (
-          <Question
-            key={i.id}
-            questionId={i.id.toString()}
-            type={i.type as QUESTION_TYPE}
-            title={i.title}
-            option_1={i.option_1}
-            option_2={i.option_2}
-            option_3={i.option_3}
-            option_4={i.option_4}
-            no={index + 1}
-          />
-        ))}
+        <Styled.TestName>{data?.name}</Styled.TestName>
+        <Styled.TestDescription>{data?.description}</Styled.TestDescription>
+        {!!data?.questions &&
+          data?.questions?.map((i, index) => (
+            <Question
+              key={i.id}
+              questionId={i.id.toString()}
+              type={i.type as QUESTION_TYPE}
+              title={i.title}
+              option_1={i.a}
+              option_2={i.b}
+              option_3={i.c}
+              option_4={i.d}
+              no={index + 1}
+            />
+          ))}
         {/* </Styled.DetailContainer> */}
         <Styled.ButtonContainer>
-          <Styled.ReworkButton type="button">
-            {t("detail.retest")}
-          </Styled.ReworkButton>
+          {!!data && !!data?.examScore && (
+            <Styled.ReworkButton type="button">
+              {t("detail.retest")}
+            </Styled.ReworkButton>
+          )}
           <Styled.SubmitButton type="submit">
             {t("detail.submit")}
           </Styled.SubmitButton>
