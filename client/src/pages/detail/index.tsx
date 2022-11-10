@@ -25,6 +25,7 @@ export interface Detail {
   description?: string;
   id?: string;
   name?: string;
+  examScore?: string | number;
   questions?: Question[];
 }
 
@@ -75,9 +76,11 @@ const Detail = () => {
           ))}
         {/* </Styled.DetailContainer> */}
         <Styled.ButtonContainer>
-          <Styled.ReworkButton type="button">
-            {t("detail.retest")}
-          </Styled.ReworkButton>
+          {!!data && !!data?.examScore && (
+            <Styled.ReworkButton type="button">
+              {t("detail.retest")}
+            </Styled.ReworkButton>
+          )}
           <Styled.SubmitButton type="submit">
             {t("detail.submit")}
           </Styled.SubmitButton>
