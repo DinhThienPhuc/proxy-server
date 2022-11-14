@@ -2,9 +2,10 @@
    ========================================================================== */
 
 import axios, { AxiosError } from "axios";
+import { getFromLocalStorage, setToLocalStorage } from "utils/functions";
 
 import { IBaseErrorResponse } from "./interfaces";
-import { getFromSessionStorage } from "utils/functions";
+import { refresh } from "./post/post.api";
 
 /**
  * Authenticated Request Interceptors config
@@ -16,12 +17,12 @@ export const requestWithJwt = axios.create({
 });
 
 requestWithJwt.interceptors.request.use(async (config) => {
-  const refreshToken = getFromSessionStorage<string | null>("refresh-token");
+  const { accessToken } = getFromLocalStorage<any>("tokens");
 
   return {
     ...config,
     headers: {
-      Authorization: `Bearer ${refreshToken || ""}`,
+      Authorization: `Bearer ${accessToken || ""}`,
       ...config.headers,
     },
   };
@@ -31,7 +32,26 @@ requestWithJwt.interceptors.response.use(
   (response) => {
     return response;
   },
-  (error: AxiosError<IBaseErrorResponse>) => {
+  async (error: AxiosError<IBaseErrorResponse>) => {
+    const originalRequest: any = error.config;
+
+    if (
+      error.response?.status === 401 &&
+      error.response?.statusText === "Unauthorized" &&
+      !originalRequest?._retry
+    ) {
+      originalRequest._retry = true;
+      const { refreshToken } = getFromLocalStorage<any>("tokens");
+      const response = await refresh({ refreshToken });
+      const accessToken = response.data?.accessToken;
+      setToLocalStorage(
+        "tokens",
+        JSON.stringify({ accessToken, refreshToken }),
+      );
+      axios.defaults.headers.common["Authorization"] = "Bearer " + accessToken;
+      return requestWithJwt(originalRequest);
+    }
+
     if (!error.response || !error.response?.data) {
       return Promise.reject({
         code: "Unknown",
@@ -42,7 +62,7 @@ requestWithJwt.interceptors.response.use(
     return Promise.reject({
       ...error.response?.data,
     });
-  }
+  },
 );
 
 /**
@@ -62,5 +82,5 @@ requestWithoutJwt.interceptors.response.use(
     return Promise.reject({
       ...error.response?.data,
     });
-  }
+  },
 );

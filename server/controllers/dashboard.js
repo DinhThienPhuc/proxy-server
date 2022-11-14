@@ -1,8 +1,9 @@
 const express = require("express");
 const { models } = require("../models");
+const { isAuthenticated } = require("../middlewares/authentication");
 const router = express.Router();
 
-router.get("/", async (_, res) => {
+router.get("/", isAuthenticated, async (_, res) => {
   try {
     const questions = await models.Question.findAll();
     const exams = await models.Exam.findAll();
@@ -14,7 +15,7 @@ router.get("/", async (_, res) => {
   }
 });
 
-router.post("/create", async (req, res) => {
+router.post("/create", isAuthenticated, async (req, res) => {
   try {
     await models.ExamQuestion.destroy({
       where: {

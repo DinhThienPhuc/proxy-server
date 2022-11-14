@@ -2,22 +2,22 @@
    ========================================================================== */
 
 import { ExamItem, IPostListResponse, IPostResponse } from "./post.interface";
+import { requestWithJwt, requestWithoutJwt } from "../request";
 
 import { AxiosResponse } from "axios";
-import { requestWithoutJwt } from "../request";
 
 export const getPosts = (): Promise<AxiosResponse<IPostListResponse>> => {
-  return requestWithoutJwt.get<IPostListResponse>("/posts");
+  return requestWithJwt.get<IPostListResponse>("/posts");
 };
 
 export const getPostById = (
   id: string,
 ): Promise<AxiosResponse<IPostResponse>> => {
-  return requestWithoutJwt.get<IPostResponse>(`/posts/${id}`);
+  return requestWithJwt.get<IPostResponse>(`/posts/${id}`);
 };
 
 export const getListExams = (): Promise<AxiosResponse<ExamItem[]>> => {
-  return requestWithoutJwt.get<ExamItem[]>("/exams");
+  return requestWithJwt.get<ExamItem[]>("/exams");
 };
 
 export const getDetailExams = ({
@@ -25,15 +25,27 @@ export const getDetailExams = ({
 }: {
   id?: string;
 }): Promise<AxiosResponse<any>> => {
-  return requestWithoutJwt.get<any>(`/exams/${id}`);
+  return requestWithJwt.get<any>(`/exams/${id}`);
 };
 
 export const getDashboardData = (): Promise<AxiosResponse<any>> => {
-  return requestWithoutJwt.get<any>("/dashboard");
+  return requestWithJwt.get<any>("/dashboard");
 };
 
 export const saveQuestionsForExam = (
   payload: any,
 ): Promise<AxiosResponse<any>> => {
-  return requestWithoutJwt.post<any>("/dashboard/create", { data: payload });
+  return requestWithJwt.post<any>("/dashboard/create", { data: payload });
+};
+
+export const login = (payload: any): Promise<AxiosResponse<any>> => {
+  return requestWithoutJwt.post<any>("/auth/login", { data: payload });
+};
+
+export const register = (payload: any): Promise<AxiosResponse<any>> => {
+  return requestWithoutJwt.post<any>("/auth/register", { data: payload });
+};
+
+export const refresh = (payload: any): Promise<AxiosResponse<any>> => {
+  return requestWithJwt.post<any>("/auth/refresh", { data: payload });
 };
