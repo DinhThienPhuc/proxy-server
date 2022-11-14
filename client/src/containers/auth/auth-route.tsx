@@ -4,6 +4,7 @@
 import { Navigate, useLocation } from "react-router-dom";
 
 import ROUTES from "routes/constant";
+import { getFromLocalStorage } from "utils/functions";
 import { useMemo } from "react";
 import useSessionStorage from "hooks/useSessionStorage";
 
@@ -23,14 +24,11 @@ const AuthRoute = ({ children }: IAuthRouteProps) => {
    * Authentication logic
    * Feel free to modify authentication logic by saving JWT in cookie or localStorage
    */
-  const [refreshToken] = useSessionStorage<string | null>(
-    "refresh-token",
-    null,
-  );
+  const tokens = getFromLocalStorage<any>("tokens");
 
   const isAuthenticated = useMemo(() => {
-    return !!refreshToken;
-  }, [refreshToken]);
+    return !!tokens?.accessToken;
+  }, [tokens?.accessToken]);
 
   /**
    * Handle case when user is authenticated but attemp to access Login page

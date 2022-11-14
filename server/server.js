@@ -5,6 +5,8 @@ const { sequelize } = require("./models");
 const initDataController = require("./controllers/init-data");
 const examController = require("./controllers/exam");
 const dashboardController = require("./controllers/dashboard");
+const authController = require("./controllers/auth");
+const { API_PREFIX } = require("./utils");
 
 const app = express();
 
@@ -16,9 +18,10 @@ app.use(cors());
 app.use(morgan("combined"));
 app.use(express.json());
 
-app.use("/init-data", initDataController);
-app.use("/exams", examController);
-app.use("/dashboard", dashboardController);
+app.use(`${API_PREFIX}/auth`, authController);
+app.use(`${API_PREFIX}/init-data`, initDataController);
+app.use(`${API_PREFIX}/exams`, examController);
+app.use(`${API_PREFIX}/dashboard`, dashboardController);
 
 sequelize.sync();
 

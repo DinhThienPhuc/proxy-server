@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 const { Sequelize } = require("sequelize");
 
 const databaseInfo = {

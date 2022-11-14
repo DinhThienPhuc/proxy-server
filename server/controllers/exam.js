@@ -1,14 +1,13 @@
 const express = require("express");
 const { models } = require("../models");
+const { isAuthenticated } = require("../middlewares/authentication");
 const uniqBy = require("lodash/uniqBy");
 const Sequelize = require("sequelize");
-const { isAnswerForThisQuestionRight, FAKE_USER_ID } = require("../utils");
+const { isAnswerForThisQuestionRight } = require("../utils");
 
 const router = express.Router();
 
-// TOOD: remove later
-
-router.get("/:id", async (req, res) => {
+router.get("/:id", isAuthenticated, async (req, res) => {
   try {
     const examInfo = await models.Exam.findOne({
       where: {
@@ -31,7 +30,7 @@ router.get("/:id", async (req, res) => {
     const listQuestionsOfUser = await models.UserExamQuestion.findAll({
       where: {
         examId: req.params.id,
-        userId: FAKE_USER_ID,
+        userId: req.user.id,
       },
     });
 
@@ -78,12 +77,12 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.post("/:id", async (req, res) => {
+router.post("/:id", isAuthenticated, async (req, res) => {
   try {
     await models.UserExamQuestion.destroy({
       where: {
         examId: req.params.id,
-        userId: FAKE_USER_ID,
+        userId: req.user.id,
       },
     });
 
@@ -115,7 +114,7 @@ router.post("/:id", async (req, res) => {
         : 0;
 
       return {
-        userId: FAKE_USER_ID,
+        userId: req.user.id,
         examId: req.params.id,
         questionId,
         userAnswer: req.body.data[questionId],
@@ -133,13 +132,11 @@ router.post("/:id", async (req, res) => {
   }
 });
 
-router.get("/", async (_, res) => {
+router.get("/", isAuthenticated, async (req, res) => {
   try {
-    console.log("listExams first");
     const listExams = await models.Exam.findAll();
-    console.log("listExams", listExams);
     const userExams = await models.UserExamQuestion.findAll({
-      where: { userId: FAKE_USER_ID },
+      where: { userId: req.user.id },
     });
 
     const uniqUserExams = uniqBy(userExams, "userId", "examId");

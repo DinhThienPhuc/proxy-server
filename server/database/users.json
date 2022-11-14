@@ -1,19 +1,13 @@
 [
   {
     "id": "7cd4ca79-e354-4978-af2b-6a1d19dd74bd",
-    "firstName": "Phuc",
-    "lastName": "Dinh",
-    "email": "thienphuc.bk14@gmail.com",
+    "firstName": "Admin",
+    "lastName": "",
+    "username": "admin",
+    "password": "asdadwdadsdawawdd",
+    "email": "admin.quizz@gmail.com",
     "description": "",
-    "gender": "male",
-    "age": 28
-  },
-  {
-    "firstName": "Tuyen",
-    "lastName": "Phung",
-    "email": "tuyenpc98@gmail.com",
-    "description": "",
-    "gender": "male",
-    "age": 24
+    "gender": "",
+    "age": 0
   }
 ]

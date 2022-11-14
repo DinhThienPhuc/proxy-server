@@ -52,3 +52,12 @@ export const getFromLocalStorage = <T>(key: string): T | null => {
   }
   return null;
 };
+
+/**
+ * Set value to Local Storage by key
+ * @param key to get value from Local Storage
+ * @returns JSON data
+ */
+export const setToLocalStorage = (key: string, value: string): void => {
+  return window.localStorage.setItem(key, value);
+};
