@@ -1,10 +1,12 @@
-import { getDetailExams } from "api/post/post.api";
-import { t } from "i18next";
-import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { useParams } from "react-router-dom";
 import Question, { QUESTION_TYPE } from "./components/Question";
+import { getDetailExams, markExam } from "api/post/post.api";
+import { useCallback, useEffect, useState } from "react";
+
 import Styled from "./index.style";
+import { t } from "i18next";
+import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 export interface Question {
   a: string | null;
@@ -21,7 +23,7 @@ export interface Question {
   userAnswer: string;
 }
 
-export interface Detail {
+export interface IDetail {
   description?: string;
   id?: string;
   name?: string;
@@ -32,27 +34,44 @@ export interface Detail {
 const Detail = () => {
   const method = useForm();
   const params = useParams();
-  const [data, setData] = useState<Detail>({} as Detail);
+  const navigate = useNavigate();
+  const [data, setData] = useState<IDetail>({} as IDetail);
 
-  const onSubmit = (data: any) => console.log(data);
+  const onSubmit = useCallback(
+    async (payload: any) => {
+      await markExam(data.id as string, payload);
+      navigate(`/exams/${data?.id}?status=view`, {
+        replace: true,
+      });
+    },
+    [data.id, navigate],
+  );
 
-  const getData = async (id?: string) => {
+  const getData = useCallback(async (id?: string) => {
     try {
-      const listExamsResponse = await getDetailExams({ id: id });
+      const listExamsResponse = await getDetailExams({ id });
       if (listExamsResponse?.data) {
         setData(listExamsResponse?.data);
-      } else setData({} as Detail);
+      } else {
+        setData({} as IDetail);
+      }
     } catch (e) {
-      console.log("error", e);
+      console.error("error", e);
     }
-  };
+  }, []);
+
+  const handleRetest = useCallback(() => {
+    navigate(`/exams/${data?.id}?status=test`, {
+      replace: true,
+    });
+  }, [data?.id, navigate]);
 
   useEffect(() => {
     if (params?.id) {
       getData(params?.id);
       return;
     }
-  }, [params?.id]);
+  }, [getData, params?.id]);
 
   return (
     <FormProvider {...method}>
@@ -60,24 +79,23 @@ const Detail = () => {
         {/* <Styled.DetailContainer> */}
         <Styled.TestName>{data?.name}</Styled.TestName>
         <Styled.TestDescription>{data?.description}</Styled.TestDescription>
-        {!!data?.questions &&
-          data?.questions?.map((i, index) => (
-            <Question
-              key={i.id}
-              questionId={i.id.toString()}
-              type={i.type as QUESTION_TYPE}
-              title={i.title}
-              option_1={i.a}
-              option_2={i.b}
-              option_3={i.c}
-              option_4={i.d}
-              no={index + 1}
-            />
-          ))}
+        {data?.questions?.map((i, index) => (
+          <Question
+            key={i.id}
+            questionId={i.id.toString()}
+            type={i.type as QUESTION_TYPE}
+            title={i.title}
+            option_1={i.a}
+            option_2={i.b}
+            option_3={i.c}
+            option_4={i.d}
+            no={index + 1}
+          />
+        ))}
         {/* </Styled.DetailContainer> */}
         <Styled.ButtonContainer>
-          {!!data && !!data?.examScore && (
-            <Styled.ReworkButton type="button">
+          {data && data?.examScore && (
+            <Styled.ReworkButton type="button" onClick={handleRetest}>
               {t("detail.retest")}
             </Styled.ReworkButton>
           )}

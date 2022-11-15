@@ -105,13 +105,17 @@ router.post("/:id", isAuthenticated, async (req, res) => {
     let data = listQuestionIds.map((questionId) => {
       const type = questionsDictionary[questionId]?.type;
       const answer = questionsDictionary[questionId]?.answer;
-      score += isAnswerForThisQuestionRight(
+      const isAnswerRight = isAnswerForThisQuestionRight(
         type,
         req.body.data[questionId],
         answer
-      )
-        ? 10
-        : 0;
+      );
+
+      if (isAnswerRight) {
+        score += 10;
+      } else {
+        score += 0;
+      }
 
       return {
         userId: req.user.id,
@@ -121,7 +125,10 @@ router.post("/:id", isAuthenticated, async (req, res) => {
       };
     });
 
-    data = data.map((d) => ({ ...d, examScore: `${score}/100` }));
+    data = data.map((d) => ({
+      ...d,
+      examScore: `${score}/${listQuestionIds.length * 10}`,
+    }));
 
     const response = await models.UserExamQuestion.bulkCreate(data);
     res.json({

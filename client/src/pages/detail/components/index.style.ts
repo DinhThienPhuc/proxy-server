@@ -1,4 +1,5 @@
 import { InputBase, RadioGroup, TextField } from "@mui/material";
+
 import styled from "styled-components";
 
 const Styled = {
@@ -23,7 +24,10 @@ const Styled = {
     border-radius: 4px;
     padding: 0 6px;
     margin-top: 8px;
-  `
+  `,
+  MultiChoiceLabel: styled.span<{ disabled?: boolean }>`
+    color: ${({ disabled }) => (disabled ? "rgba(0, 0, 0, 0.38)" : "")};
+  `,
 };
 
 export default Styled;
