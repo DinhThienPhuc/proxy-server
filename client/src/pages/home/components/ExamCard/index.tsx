@@ -1,5 +1,6 @@
 import Styled from "./index.style";
 import { t } from "i18next";
+import { useMemo } from "react";
 
 interface Props {
   description?: string;
@@ -11,16 +12,30 @@ interface Props {
 }
 
 const ExamCard = ({ name, description, score, status, id }: Props) => {
+  const examPath = useMemo(() => {
+    return `/exams/${id}?status=${score ? "view" : "test"}`;
+  }, [id, score]);
+
+  const statusText = useMemo(() => {
+    if (status === "tested") {
+      return t("homepage.filter.tested");
+    }
+    return t("homepage.filter.pending");
+  }, [status]);
+
+  const scoreText = useMemo(() => {
+    if (!score) {
+      return null;
+    }
+    return <Styled.CardScore>{score}</Styled.CardScore>;
+  }, [score]);
+
   return (
-    <Styled.CardWrapper to={`/exams/${id}?status=view`}>
-      <Styled.CardStatus status={status}>
-        {status === "tested"
-          ? t("homepage.filter.tested")
-          : t("homepage.filter.pending")}
-      </Styled.CardStatus>
+    <Styled.CardWrapper to={examPath}>
+      <Styled.CardStatus status={status}>{statusText}</Styled.CardStatus>
       <Styled.CardNameContainer>
         <Styled.CardName title={name}>{name}</Styled.CardName>
-        {score ? <Styled.CardScore>{score}</Styled.CardScore> : null}
+        {scoreText}
       </Styled.CardNameContainer>
       <Styled.CardDescription>{description}</Styled.CardDescription>
     </Styled.CardWrapper>
