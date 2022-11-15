@@ -1,6 +1,5 @@
-import { t } from "i18next";
-import React from "react";
 import Styled from "./index.style";
+import { t } from "i18next";
 
 interface Props {
   description?: string;
@@ -13,7 +12,7 @@ interface Props {
 
 const ExamCard = ({ name, description, score, status, id }: Props) => {
   return (
-    <Styled.CardWrapper to={`/exams/${id}`}>
+    <Styled.CardWrapper to={`/exams/${id}?status=view`}>
       <Styled.CardStatus status={status}>
         {status === "tested"
           ? t("homepage.filter.tested")

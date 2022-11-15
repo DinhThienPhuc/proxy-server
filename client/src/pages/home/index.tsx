@@ -20,7 +20,7 @@ type ParamsList = {
 const Home = () => {
   const [dataState, setDataState] = useState<ExamItem[]>([] as ExamItem[]);
   const [filter, setFilter] = useState<string>("all");
-  const [page, setPage] = useState<number>(10);
+  const [page] = useState<number>(10);
   const { t } = useTranslation();
 
   const filterOptions = useMemo(() => {
@@ -88,17 +88,16 @@ const Home = () => {
         </Styled.FilterDropdown>
       </Styled.FilterContainer>
       <Styled.ListExams>
-        {!!dataState &&
-          dataState?.map((item, index) => (
-            <ExamCard
-              name={item.name}
-              description={item.description}
-              key={index}
-              score={item.score}
-              id={item.id}
-              status={item.score ? "tested" : "pending"}
-            />
-          ))}
+        {dataState?.map?.((item, index) => (
+          <ExamCard
+            name={item.name}
+            description={item.description}
+            key={index}
+            score={item.score}
+            id={item.id}
+            status={item.score ? "tested" : "pending"}
+          />
+        ))}
       </Styled.ListExams>
       <Styled.PaginationContainer>
         <Pagination count={page} />
