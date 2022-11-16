@@ -7,6 +7,7 @@ import Styled from "./index.style";
 import { t } from "i18next";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import ModalComponent from "components/Modal";
 
 export interface Question {
   a: string | null;
@@ -36,6 +37,11 @@ const Detail = () => {
   const params = useParams();
   const navigate = useNavigate();
   const [data, setData] = useState<IDetail>({} as IDetail);
+  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+
+  const handleOpenModal = () => {
+    setIsOpenModal(true);
+  };
 
   const onSubmit = useCallback(
     async (payload: any) => {
@@ -89,7 +95,9 @@ const Detail = () => {
             option_2={i.b}
             option_3={i.c}
             option_4={i.d}
+            value={i.userAnswer}
             no={index + 1}
+            isRight={i.isRight}
           />
         ))}
         {/* </Styled.DetailContainer> */}
@@ -99,11 +107,14 @@ const Detail = () => {
               {t("detail.retest")}
             </Styled.ReworkButton>
           )}
-          <Styled.SubmitButton type="submit">
-            {t("detail.submit")}
-          </Styled.SubmitButton>
+          {data && !data?.examScore && (
+            <Styled.SubmitButton type="submit">
+              {t("detail.submit")}
+            </Styled.SubmitButton>
+          )}
         </Styled.ButtonContainer>
       </Styled.FormContainer>
+      <ModalComponent isOpen={isOpenModal} />
     </FormProvider>
   );
 };
