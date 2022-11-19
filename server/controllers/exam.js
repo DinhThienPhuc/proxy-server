@@ -142,11 +142,11 @@ router.post("/:id", isAuthenticated, async (req, res) => {
 router.get("/", isAuthenticated, async (req, res) => {
   try {
     const listExams = await models.Exam.findAll();
-    const userExams = await models.UserExamQuestion.findAll({
+    const userExamsQuestion = await models.UserExamQuestion.findAll({
       where: { userId: req.user.id },
     });
 
-    const uniqUserExams = uniqBy(userExams, "userId", "examId");
+    const uniqUserExams = uniqBy(userExamsQuestion, "examId");
 
     const result = listExams?.map((exam) => ({
       id: exam.id,
