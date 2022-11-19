@@ -1,6 +1,6 @@
 import { Box, Checkbox, FormControlLabel, Radio } from "@mui/material";
 import { FieldValues, UseFormSetValue, useFormContext } from "react-hook-form";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import Styled from "./index.style";
 import { useSearchParams } from "react-router-dom";
@@ -51,11 +51,21 @@ const MultiChoice = ({
   isRight,
 }: QuestionChoiceProps) => {
   const [valueState, setValueState] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (value === "") {
+      setValueState([]);
+      return;
+    } else {
+      const parseValue = value?.split(":::");
+      setValueState(parseValue as string[]);
+    }
+  }, [value]);
+
   if (!options) return <></>;
 
   const handleChange = (flag: boolean, value?: string | number) => {
     const cloneState = JSON.parse(JSON.stringify(valueState));
-
     if (flag) {
       cloneState.push(value);
       setValueState(cloneState);
@@ -85,7 +95,7 @@ const MultiChoice = ({
           !!item?.value && (
             <Styled.MultiChoiceContainer key={index}>
               <Checkbox
-                checked={value?.split(":::").includes(String(item?.label))}
+                checked={valueState.includes(String(item?.label))}
                 disabled={disabled}
                 onChange={(e) => handleChange(e.target.checked, item?.label)}
               />
@@ -105,12 +115,22 @@ const SingleChoice = ({
   questionId,
   onChange,
   disabled,
-  value,
+  value = undefined,
   isRight,
 }: QuestionChoiceProps) => {
+  const [state, setState] = useState<string | number | undefined>(value);
+
+  useEffect(() => {
+    if (value === undefined) {
+      setState("");
+      return;
+    }
+  }, [value]);
+
   if (!options) return <></>;
 
   const handleChange = (value?: string | number) => {
+    setState(value);
     onChange?.(questionId as string, value);
   };
 
@@ -127,21 +147,20 @@ const SingleChoice = ({
   return (
     <Styled.RadioGroupContainer
       name={questionId}
-      value={value}
+      value={state}
       onChange={(e) => handleChange(e.target.value)}
     >
       {options?.map(
         (item, index) =>
           !!item?.value && (
-            <Styled.FormControlLabelContainer>
+            <Styled.FormControlLabelContainer key={index}>
               <FormControlLabel
-                key={index}
                 value={item?.label}
                 control={<Radio />}
                 label={item?.value}
                 disabled={disabled}
               />
-              <Box>{showIcon(item?.label)}</Box>
+              <Styled.ShowIcon>{showIcon(item?.label)}</Styled.ShowIcon>
             </Styled.FormControlLabelContainer>
           ),
       )}
@@ -156,10 +175,19 @@ const MissingText = ({
   value,
   isRight,
 }: QuestionChoiceProps) => {
+  const [state, setState] = useState<string | undefined>(value);
   const { t } = useTranslation();
   const handleChange = (value: string) => {
+    setState(value);
     onChange?.(questionId as string, value);
   };
+
+  useEffect(() => {
+    if (!value) {
+      setState("");
+      return;
+    }
+  }, [value]);
 
   const showIcon = () => {
     if (value) {
@@ -172,13 +200,13 @@ const MissingText = ({
   return (
     <Styled.InputTextContainer>
       <Styled.InputText
-        value={value}
+        value={state}
         disabled={disabled}
         name={questionId}
         placeholder={t("detail.missing_text")}
         onChange={(e) => handleChange(e.target.value)}
       />
-      <span>{showIcon()}</span>
+      <Styled.ShowIcon>{showIcon()}</Styled.ShowIcon>
     </Styled.InputTextContainer>
   );
 };
@@ -214,7 +242,7 @@ const Question = (props: Props) => {
         return (
           <MultiChoice
             onChange={setValue}
-            value={props?.value}
+            value={props?.value === undefined ? "" : props?.value}
             questionId={props.questionId}
             isRight={props.isRight}
             options={[

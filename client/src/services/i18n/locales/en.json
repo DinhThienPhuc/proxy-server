@@ -20,7 +20,11 @@
       "question_no": "Question",
       "missing_text": "Missing Text",
       "submit": "Submit",
-      "retest": "Re-test"
+      "retest": "Re-test",
+      "modal_test_title": "Submit the test",
+      "not_enough_field": "You're not finish all questions",
+      "modal_test_description": "Are you sure to submit the test?",
+      "score": "Score: "
     }
   }
 }

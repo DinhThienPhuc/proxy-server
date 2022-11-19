@@ -47,7 +47,9 @@ const Styled = {
     align-items: center;
   `,
   ShowIcon: styled.div`
-    margin-left: 10px;
+    display: flex;
+    aligh-items: center;
+    margin-left: 4px;
   `,
   MultiChoiceLabel: styled.span<{ disabled?: boolean }>`
     color: ${({ disabled }) => (disabled ? "rgba(0, 0, 0, 0.38)" : "")};
