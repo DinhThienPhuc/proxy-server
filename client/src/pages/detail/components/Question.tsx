@@ -24,6 +24,8 @@ interface QuestionProps {
   option_2?: string | null;
   option_3?: string | null;
   option_4?: string | null;
+  value?: string;
+  isRight?: boolean;
 }
 
 interface OptionObj {
@@ -36,6 +38,8 @@ interface QuestionChoiceProps {
   questionId?: string;
   onChange?: UseFormSetValue<FieldValues>;
   disabled?: boolean;
+  value?: string;
+  isRight?: boolean;
 }
 
 const MultiChoice = ({
@@ -43,6 +47,8 @@ const MultiChoice = ({
   questionId,
   onChange,
   disabled,
+  value,
+  isRight,
 }: QuestionChoiceProps) => {
   const [valueState, setValueState] = useState<string[]>([]);
   if (!options) return <></>;
@@ -61,20 +67,33 @@ const MultiChoice = ({
     }
   };
 
+  const showIcon = (v?: string | number) => {
+    if (isRight) {
+      if (value?.split(":::").includes(String(v)))
+        return <Styled.CheckedIcon />;
+      return null;
+    } else {
+      if (value?.split(":::").includes(String(v))) return <Styled.ClosedIcon />;
+      return null;
+    }
+  };
+
   return (
     <>
       {options?.map(
         (item, index) =>
           !!item?.value && (
-            <Box key={index}>
+            <Styled.MultiChoiceContainer key={index}>
               <Checkbox
+                checked={value?.split(":::").includes(String(item?.label))}
                 disabled={disabled}
                 onChange={(e) => handleChange(e.target.checked, item?.label)}
               />
               <Styled.MultiChoiceLabel disabled={disabled}>
                 {item?.value}
               </Styled.MultiChoiceLabel>
-            </Box>
+              <Styled.ShowIcon>{showIcon(item?.label)}</Styled.ShowIcon>
+            </Styled.MultiChoiceContainer>
           ),
       )}
     </>
@@ -86,29 +105,44 @@ const SingleChoice = ({
   questionId,
   onChange,
   disabled,
+  value,
+  isRight,
 }: QuestionChoiceProps) => {
-  const [valueState, setValueState] = useState<string[]>([]);
   if (!options) return <></>;
 
   const handleChange = (value?: string | number) => {
     onChange?.(questionId as string, value);
   };
 
+  const showIcon = (v?: string | number) => {
+    if (isRight) {
+      if (v === value) return <Styled.CheckedIcon />;
+      return null;
+    } else {
+      if (v === value) return <Styled.ClosedIcon />;
+      return null;
+    }
+  };
+
   return (
     <Styled.RadioGroupContainer
       name={questionId}
+      value={value}
       onChange={(e) => handleChange(e.target.value)}
     >
       {options?.map(
         (item, index) =>
           !!item?.value && (
-            <FormControlLabel
-              key={index}
-              value={item?.label}
-              control={<Radio />}
-              label={item?.value}
-              disabled={disabled}
-            />
+            <Styled.FormControlLabelContainer>
+              <FormControlLabel
+                key={index}
+                value={item?.label}
+                control={<Radio />}
+                label={item?.value}
+                disabled={disabled}
+              />
+              <Box>{showIcon(item?.label)}</Box>
+            </Styled.FormControlLabelContainer>
           ),
       )}
     </Styled.RadioGroupContainer>
@@ -119,19 +153,33 @@ const MissingText = ({
   questionId,
   onChange,
   disabled,
+  value,
+  isRight,
 }: QuestionChoiceProps) => {
   const { t } = useTranslation();
   const handleChange = (value: string) => {
     onChange?.(questionId as string, value);
   };
 
+  const showIcon = () => {
+    if (value) {
+      if (isRight) return <Styled.CheckedIcon />;
+      return <Styled.ClosedIcon />;
+    }
+    return null;
+  };
+
   return (
-    <Styled.InputText
-      disabled={disabled}
-      name={questionId}
-      placeholder={t("detail.missing_text")}
-      onChange={(e) => handleChange(e.target.value)}
-    />
+    <Styled.InputTextContainer>
+      <Styled.InputText
+        value={value}
+        disabled={disabled}
+        name={questionId}
+        placeholder={t("detail.missing_text")}
+        onChange={(e) => handleChange(e.target.value)}
+      />
+      <span>{showIcon()}</span>
+    </Styled.InputTextContainer>
   );
 };
 
@@ -150,7 +198,9 @@ const Question = (props: Props) => {
         return (
           <SingleChoice
             onChange={setValue}
+            value={props?.value}
             questionId={props.questionId}
+            isRight={props.isRight}
             options={[
               { value: props?.option_1 || "", label: "a" },
               { value: props?.option_2 || "", label: "b" },
@@ -164,7 +214,9 @@ const Question = (props: Props) => {
         return (
           <MultiChoice
             onChange={setValue}
+            value={props?.value}
             questionId={props.questionId}
+            isRight={props.isRight}
             options={[
               { value: props?.option_1 || "", label: "a" },
               { value: props?.option_2 || "", label: "b" },
@@ -178,8 +230,10 @@ const Question = (props: Props) => {
         return (
           <MissingText
             onChange={setValue}
+            value={props?.value}
             questionId={props.questionId}
             disabled={isInViewMode}
+            isRight={props.isRight}
           />
         );
       default:
