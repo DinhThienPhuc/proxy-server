@@ -5,9 +5,19 @@ import { useCallback, useEffect, useState } from "react";
 
 import Styled from "./index.style";
 import { t } from "i18next";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import ModalComponent from "components/Modal";
+
+enum Mode {
+  VIEW = "view",
+  TEST = "test",
+}
+
+enum ModalType {
+  SUBMIT = "submit",
+  FAIL = "fail",
+}
 
 export interface Question {
   a: string | null;
@@ -35,11 +45,14 @@ export interface IDetail {
 const Detail = () => {
   const method = useForm();
   const params = useParams();
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [data, setData] = useState<IDetail>({} as IDetail);
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+  const [modalType, setModalType] = useState<ModalType>(ModalType.SUBMIT);
 
   const handleOpenModal = () => {
+    setModalType(ModalType.SUBMIT);
     setIsOpenModal(true);
   };
 
@@ -49,22 +62,40 @@ const Detail = () => {
       navigate(`/exams/${data?.id}?status=view`, {
         replace: true,
       });
+      setIsOpenModal(false);
     },
     [data.id, navigate],
   );
 
-  const getData = useCallback(async (id?: string) => {
-    try {
-      const listExamsResponse = await getDetailExams({ id });
-      if (listExamsResponse?.data) {
-        setData(listExamsResponse?.data);
-      } else {
-        setData({} as IDetail);
+  const getData = useCallback(
+    async (id?: string) => {
+      try {
+        const listExamsResponse = await getDetailExams({ id });
+        if (listExamsResponse?.data) {
+          const status = searchParams.get("status");
+          if (status === Mode.VIEW) {
+            setData(listExamsResponse?.data);
+          } else {
+            const newQuestions: Question[] =
+              listExamsResponse?.data?.questions?.map((i: Question) => ({
+                ...i,
+                userAnswer: null,
+              }));
+            const newData: IDetail = {
+              ...listExamsResponse?.data,
+              questions: newQuestions,
+            };
+            setData(newData);
+          }
+        } else {
+          setData({} as IDetail);
+        }
+      } catch (e) {
+        console.error("error", e);
       }
-    } catch (e) {
-      console.error("error", e);
-    }
-  }, []);
+    },
+    [searchParams],
+  );
 
   const handleRetest = useCallback(() => {
     navigate(`/exams/${data?.id}?status=test`, {
@@ -72,12 +103,28 @@ const Detail = () => {
     });
   }, [data?.id, navigate]);
 
+  const handleOkModal = useCallback(() => {
+    const payload = method.getValues();
+    if (modalType === ModalType.FAIL) {
+      setIsOpenModal(false);
+      return;
+    }
+    if (
+      !!data?.questions &&
+      Object.keys(payload).length < data?.questions?.length
+    ) {
+      setModalType(ModalType.FAIL);
+      return;
+    }
+    onSubmit(payload);
+  }, [data?.questions, method, modalType, onSubmit]);
+
   useEffect(() => {
     if (params?.id) {
       getData(params?.id);
       return;
     }
-  }, [getData, params?.id]);
+  }, [getData, params, searchParams]);
 
   return (
     <FormProvider {...method}>
@@ -85,6 +132,9 @@ const Detail = () => {
         {/* <Styled.DetailContainer> */}
         <Styled.TestName>{data?.name}</Styled.TestName>
         <Styled.TestDescription>{data?.description}</Styled.TestDescription>
+        {data?.examScore && searchParams.get("status") === Mode.VIEW && (
+          <Styled.Score>{t("detail.score") + data?.examScore}</Styled.Score>
+        )}
         {data?.questions?.map((i, index) => (
           <Question
             key={i.id}
@@ -95,26 +145,38 @@ const Detail = () => {
             option_2={i.b}
             option_3={i.c}
             option_4={i.d}
-            value={i.userAnswer}
+            value={i.userAnswer === null ? undefined : i.userAnswer}
             no={index + 1}
             isRight={i.isRight}
           />
         ))}
         {/* </Styled.DetailContainer> */}
         <Styled.ButtonContainer>
-          {data && data?.examScore && (
+          {data && data?.examScore && searchParams.get("status") === Mode.VIEW && (
             <Styled.ReworkButton type="button" onClick={handleRetest}>
               {t("detail.retest")}
             </Styled.ReworkButton>
           )}
-          {data && !data?.examScore && (
-            <Styled.SubmitButton type="submit">
+          {((data && !data?.examScore) ||
+            searchParams.get("status") === Mode.TEST) && (
+            <Styled.SubmitButton type="button" onClick={handleOpenModal}>
               {t("detail.submit")}
             </Styled.SubmitButton>
           )}
         </Styled.ButtonContainer>
       </Styled.FormContainer>
-      <ModalComponent isOpen={isOpenModal} />
+      <ModalComponent
+        isOpen={isOpenModal}
+        title={t("detail.modal_test_title")}
+        description={
+          modalType === ModalType.FAIL
+            ? t("detail.not_enough_field")
+            : t("detail.modal_test_description")
+        }
+        onCancel={() => setIsOpenModal(false)}
+        onOk={handleOkModal}
+        onClose={() => setIsOpenModal(false)}
+      />
     </FormProvider>
   );
 };

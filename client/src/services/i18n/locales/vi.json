@@ -20,7 +20,11 @@
       "question_no": "Câu hỏi",
       "missing_text": "Từ còn thiếu",
       "submit": "Nộp bài",
-      "retest": "Làm lại"
+      "retest": "Làm lại",
+      "modal_test_title": "Nộp bài thi",
+      "not_enough_field": "Bạn chưa điền đủ tất cả các câu hỏi",
+      "modal_test_description": "Chắc chắn nộp bài thi?",
+      "score": "Điểm thi: "
     }
   }
 }

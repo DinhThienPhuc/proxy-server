@@ -51,7 +51,11 @@ const Styled = {
     &:hover {
       background-color: #4760cb;
     }
-`
+`,
+  Score: styled.div`
+    font-weight: bold;
+    color: red;
+`,
 };
 
 export default Styled;
