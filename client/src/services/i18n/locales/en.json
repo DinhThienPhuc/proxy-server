@@ -4,7 +4,8 @@
     "navbar": {
       "homepage": "Homepage",
       "posts": "Posts",
-      "about_us": "About us"
+      "about_us": "About us",
+      "sign_out": "Sign Out"
     },
     "homepage": {
       "filter_title": "List Exams",

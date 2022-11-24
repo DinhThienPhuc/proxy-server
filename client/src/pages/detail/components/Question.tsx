@@ -1,10 +1,11 @@
-import { Box, Checkbox, FormControlLabel, Radio } from "@mui/material";
+import { Checkbox, FormControlLabel, Radio } from "@mui/material";
 import { FieldValues, UseFormSetValue, useFormContext } from "react-hook-form";
 import { useEffect, useMemo, useState } from "react";
 
 import Styled from "./index.style";
 import { useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { ModalType } from "..";
 
 export enum QUESTION_TYPE {
   MULTIPLE_CHOICE = "MULTIPLE_CHOICE",
@@ -15,6 +16,8 @@ export enum QUESTION_TYPE {
 interface Props extends QuestionProps {
   questionId?: string;
   type: QUESTION_TYPE;
+  statusType?: ModalType;
+  formPayload?: FieldValues;
 }
 
 interface QuestionProps {
@@ -200,6 +203,7 @@ const MissingText = ({
   return (
     <Styled.InputTextContainer>
       <Styled.InputText
+        sx={{ background: "white" }}
         value={state}
         disabled={disabled}
         name={questionId}
@@ -269,8 +273,15 @@ const Question = (props: Props) => {
     }
   };
 
+  const isEmpty = useMemo(() => {
+    if (!props?.questionId) return false;
+    return props?.formPayload?.[props?.questionId] === undefined;
+  }, [props?.formPayload, props?.questionId]);
+
   return (
-    <Styled.QuestionContainer>
+    <Styled.QuestionContainer
+      isFail={props.statusType === ModalType.FAIL && isEmpty}
+    >
       <Styled.QuestionTitle>
         <Styled.QuestionNo>
           {t("detail.question_no") + " " + props?.no}:

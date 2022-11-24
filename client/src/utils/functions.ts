@@ -61,3 +61,7 @@ export const getFromLocalStorage = <T>(key: string): T | null => {
 export const setToLocalStorage = (key: string, value: string): void => {
   return window.localStorage.setItem(key, value);
 };
+
+export const removeLocalStorage = (key: string): void => {
+  return window.localStorage.removeItem(key);
+};

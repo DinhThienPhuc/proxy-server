@@ -4,7 +4,8 @@
     "navbar": {
       "homepage": "Trang chủ",
       "posts": "Bài viết",
-      "about_us": "Về chúng tôi"
+      "about_us": "Về chúng tôi",
+      "sign_out": "Đăng xuất"
     },
     "homepage": {
       "filter_title": "Danh sách bài thi",

@@ -3,12 +3,14 @@
 
 import { useCallback, useMemo } from "react";
 
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { Select } from "components";
 import Styled from "./navbar.style";
 import { useSessionStorage } from "hooks";
 import { useTheme } from "services/styled-themes";
 import { useTranslation } from "services/i18n";
+import { removeLocalStorage } from "utils/functions";
+import ROUTES from "routes/constant";
 
 const Navbar = () => {
   const { t, i18n } = useTranslation();
@@ -17,6 +19,7 @@ const Navbar = () => {
     "refresh-token",
     null,
   );
+  const navigate = useNavigate();
 
   const activateLink = useCallback((isLastItem?: boolean) => {
     return ({ isActive }: { isActive: boolean }) => ({
@@ -54,8 +57,9 @@ const Navbar = () => {
   }, [setTheme, theme]);
 
   const handleLogout = useCallback(async () => {
-    setRefreshToken(null);
-  }, [setRefreshToken]);
+    removeLocalStorage("tokens");
+    navigate(ROUTES.login);
+  }, [navigate]);
 
   const renderThemeSwitcher = useMemo(() => {
     const icon = theme === "dark" ? <span>☀️</span> : <span>🌙</span>;
@@ -68,12 +72,16 @@ const Navbar = () => {
   }, [handleThemeSwitch, theme]);
 
   const renderUserMenu = useMemo(() => {
-    if (!refreshToken) {
-      return null;
-    }
+    // if (!refreshToken) {
+    //   return null;
+    // }
 
-    return <button onClick={handleLogout}>Logout</button>;
-  }, [handleLogout, refreshToken]);
+    return (
+      <Styled.SignOutButton type="button" onClick={handleLogout}>
+        {t("navbar.sign_out")}
+      </Styled.SignOutButton>
+    );
+  }, [handleLogout, t]);
 
   return (
     <Styled.Container>
