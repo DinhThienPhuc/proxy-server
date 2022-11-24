@@ -28,7 +28,7 @@ docker compose -f docker-compose-database.yml up -d
 
 Authentication
 
-- /api/v1/auth/register: api for register
+- `/api/v1/auth/register`: api for register
 - /api/v1/auth/login: api for login
 - /api/v1/auth/refresh: api for sending refresh token and re-new access token
 
