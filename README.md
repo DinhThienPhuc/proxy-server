@@ -23,3 +23,17 @@ docker compose -f docker-compose-database.yml up -d
 ```
 
 **Noted**: The above commands can run on local or on a VPS
+
+## API
+
+Authentication
+
+- /api/v1/auth/register: api for register
+- /api/v1/auth/login: api for login
+- /api/v1/auth/refresh: api for sending refresh token and re-new access token
+
+Init data
+
+- /api/v1/init-data/questions: api for initialize questions data
+- /api/v1/init-data/exams: api for initialize exams data
+
