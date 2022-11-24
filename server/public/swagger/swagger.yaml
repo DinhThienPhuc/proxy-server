@@ -1,0 +1,32 @@
+swagger: "2.0"
+info:
+  description: Example of integration swagger with Rails
+  version: 1.0.0
+  title: Rails 5 Swagger
+schemes:
+  - http
+host: "localhost:3000"
+basePath: "/api/v1"
+paths:
+  /users:
+    post:
+      tags:
+        - Register user
+      description: Create new user
+      produces:
+        - application/json
+      parameters:
+        - in: "formData"
+          name: "user[nickname]"
+          required: true
+        - in: "formData"
+          name: "user[birthday]"
+          required: true
+          type: string
+        - in: "formData"
+          name: "user[avatar_id]"
+          required: true
+          type: number
+      responses:
+        200:
+          description: User created
