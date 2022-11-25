@@ -141,14 +141,31 @@ router.post("/:id", isAuthenticated, async (req, res) => {
 
 router.get("/", isAuthenticated, async (req, res) => {
   try {
-    const listExams = await models.Exam.findAll();
+    const { page = "1", size = "10", search } = req.query;
+    let paginationParams = {};
+    if (!isNaN(Number(size))) {
+      paginationParams.limit = Number(size);
+    }
+    if (!isNaN(Number(page))) {
+      paginationParams.offset = Number(size) * (Number(page) - 1);
+    }
+    if (search) {
+      paginationParams.where = {
+        name: {
+          [Sequelize.Op.like]: `%${search}%`,
+        },
+      };
+    }
+    const listExams = Object.keys(paginationParams).length
+      ? await models.Exam.findAndCountAll(paginationParams)
+      : await models.Exam.findAndCountAll();
     const userExamsQuestion = await models.UserExamQuestion.findAll({
       where: { userId: req.user.id },
     });
 
     const uniqUserExams = uniqBy(userExamsQuestion, "examId");
 
-    const result = listExams?.map((exam) => ({
+    const data = listExams?.rows?.map((exam) => ({
       id: exam.id,
       name: exam.name,
       description: exam.description,
@@ -158,7 +175,12 @@ router.get("/", isAuthenticated, async (req, res) => {
         uniqUserExams?.find((e) => exam.id === e.examId)?.examScore ?? null,
     }));
 
-    res.json(result);
+    res.json({
+      page: Number(page),
+      size: Number(size),
+      totalRecords: listExams.count,
+      data,
+    });
   } catch (error) {
     res.json(error);
   }
