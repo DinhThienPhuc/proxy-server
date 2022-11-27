@@ -1,4 +1,4 @@
-import { FormProvider, useForm } from "react-hook-form";
+import { FieldValues, FormProvider, useForm } from "react-hook-form";
 import Question, { QUESTION_TYPE } from "./components/Question";
 import { getDetailExams, markExam } from "api/post/post.api";
 import { useCallback, useEffect, useState } from "react";
@@ -14,7 +14,7 @@ enum Mode {
   TEST = "test",
 }
 
-enum ModalType {
+export enum ModalType {
   SUBMIT = "submit",
   FAIL = "fail",
 }
@@ -50,6 +50,7 @@ const Detail = () => {
   const [data, setData] = useState<IDetail>({} as IDetail);
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
   const [modalType, setModalType] = useState<ModalType>(ModalType.SUBMIT);
+  const [formPayload, setFormPayload] = useState<FieldValues>({});
 
   const handleOpenModal = () => {
     setModalType(ModalType.SUBMIT);
@@ -114,6 +115,7 @@ const Detail = () => {
       Object.keys(payload).length < data?.questions?.length
     ) {
       setModalType(ModalType.FAIL);
+      setFormPayload(payload);
       return;
     }
     onSubmit(payload);
@@ -137,6 +139,8 @@ const Detail = () => {
         )}
         {data?.questions?.map((i, index) => (
           <Question
+            formPayload={formPayload}
+            statusType={modalType}
             key={i.id}
             questionId={i.id.toString()}
             type={i.type as QUESTION_TYPE}

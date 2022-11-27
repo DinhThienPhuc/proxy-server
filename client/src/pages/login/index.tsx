@@ -7,6 +7,7 @@ import ROUTES from "routes/constant";
 import { setToLocalStorage } from "utils/functions";
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+import Styled from "./index.style";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -39,11 +40,11 @@ const Login = () => {
   }, []);
 
   return (
-    <>
+    <Styled.LoginContainer>
       <p>Login page</p>
       <button onClick={handleLogin}>Login</button>
       <button onClick={handleRegister}>Sign up</button>
-    </>
+    </Styled.LoginContainer>
   );
 };
 

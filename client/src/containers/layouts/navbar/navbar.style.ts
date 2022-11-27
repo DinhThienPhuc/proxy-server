@@ -25,6 +25,21 @@ const Styled = {
   ThemeSwitcher: styled.div`
     margin-left: 20px;
   `,
+  SignOutButton: styled.button`
+    width: 100px;
+    height: 30px;
+    margin-left: 10px;
+    outline: none;
+    cursor: pointer;
+    border: 1px solid grey;
+    background-color: #ff5858;
+    color: white;
+    font-weight: 500;
+    border-radius: 4px;
+    &:hover {
+        background-color: #d14545;
+    }
+  `
 };
 
 export default Styled;

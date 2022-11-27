@@ -3,15 +3,18 @@ import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 
 import styled from "styled-components";
-
+type Props =  {
+  isFail: boolean
+}
 const Styled = {
-  QuestionContainer: styled.div`
-    margin: 0 auto 20px;
-    padding: 20px;
-    border: 1px solid #cccccc;
-    border-radius: 8px;
-    min-height: 150px;
-  `,
+  QuestionContainer: styled.div<Props>`
+  margin: 0 auto 20px;
+  padding: 20px;
+  border: ${({isFail}) => (isFail ? "1px solid red" : "1px solid #cccccc")};
+  background-color: ${({isFail}) => (isFail ? "#f5c4c4" : "white")};
+  border-radius: 8px;
+  min-height: 150px;
+`,
   QuestionTitle: styled.div`
     word-break: break-all;
   `,
@@ -32,6 +35,7 @@ const Styled = {
     gap: 10px
   `,
   InputText: styled(InputBase)`
+    background: #white;
     border: 1px solid #cccccc;
     border-radius: 4px;
     padding: 0 6px;
