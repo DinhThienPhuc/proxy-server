@@ -4,10 +4,10 @@
 import { requestWithJwt, requestWithoutJwt } from "../request";
 
 import { AxiosResponse } from "axios";
-import { ExamItem } from "./post.interface";
+import { DataListExam, ListExamParams } from "./post.interface";
 
-export const getListExams = (): Promise<AxiosResponse<ExamItem[]>> => {
-  return requestWithJwt.get<ExamItem[]>("/exams");
+export const getListExams = ({params}: {params?: ListExamParams}): Promise<AxiosResponse<DataListExam>> => {
+  return requestWithJwt.get<DataListExam>("/exams", {params: params});
 };
 
 export const getDetailExams = ({

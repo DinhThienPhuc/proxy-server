@@ -52,6 +52,10 @@ const Styled = {
     display: flex;
     margin-top: 16px;
     justify-content: center;
+  `,
+  EmptyData: styled.div`
+    text-align: center;
+    font-style: italic;
   `
 };
 
