@@ -160,7 +160,7 @@ router.get("/", isAuthenticated, async (req, res) => {
         uniqUserExams?.find((e) => exam.id === e.examId)?.examScore ?? null,
     }));
 
-    let totalRecords = 0;
+    let totalRecords = null;
     if (search) {
       data = data.filter(
         (d) => d.name?.toLowerCase()?.indexOf(search.toLowerCase()) >= 0
@@ -177,6 +177,7 @@ router.get("/", isAuthenticated, async (req, res) => {
     }
 
     if (!isNaN(Number(size)) && !isNaN(Number(page))) {
+      totalRecords = totalRecords == null ? data.length : totalRecords;
       data = data.slice(
         Number(size) * (Number(page) - 1),
         Number(size) * Number(page)
