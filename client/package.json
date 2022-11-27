@@ -5,6 +5,7 @@
   "dependencies": {
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
+    "@hookform/resolvers": "^2.9.10",
     "@loadable/component": "^5.15.2",
     "@mui/icons-material": "^5.10.9",
     "@mui/lab": "^5.0.0-alpha.106",
@@ -22,7 +23,8 @@
     "react-router-dom": "6",
     "react-scripts": "5.0.0",
     "styled-components": "^5.3.3",
-    "typescript": "^4.4.2"
+    "typescript": "^4.4.2",
+    "yup": "^0.32.11"
   },
   "scripts": {
     "dev": "env-cmd -f .env.development react-scripts start",

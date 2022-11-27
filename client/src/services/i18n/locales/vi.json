@@ -15,6 +15,7 @@
         "pending": "Chưa hoàn thành",
         "tested": "Đã hoàn thành"
       },
+      "empty_data": "Không có bài thi nào",
       "filter_placeholder_search": "Tên bài thi"
     },
     "detail": {
@@ -26,6 +27,17 @@
       "not_enough_field": "Bạn chưa điền đủ tất cả các câu hỏi",
       "modal_test_description": "Chắc chắn nộp bài thi?",
       "score": "Điểm thi: "
+    },
+    "login": {
+      "username": "Tài khoản",
+      "password": "Mật khẩu",
+      "confirm_password": "Điền lại mật khẩu",
+      "login": "Đăng nhập",
+      "back": "Quay lại",
+      "sign_up": "Đăng ký",
+      "username_not_empty": "Tài khoản không được để trống",
+      "password_not_empty": "Mật khẩu không được để trống",
+      "password_must_match": "Điền lại mật khẩu không đúng"
     }
   }
 }

@@ -20,3 +20,15 @@ export interface IPostListResponse extends IBaseResponse {
 export interface ExamItem {
   [key: string]: any;
 }
+
+export interface DataListExam  {
+  data: ExamItem[];
+  page: number;
+  size: number;
+  totalRecords: number;
+};
+
+export interface ListExamParams {
+  page?: number
+  search?: string
+}

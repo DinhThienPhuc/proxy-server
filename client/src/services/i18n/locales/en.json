@@ -15,6 +15,7 @@
         "pending": "Pending",
         "tested": "Tested"
       },
+      "empty_data": "Empty data",
       "filter_placeholder_search": "Test's name"
     },
     "detail": {
@@ -26,6 +27,17 @@
       "not_enough_field": "You're not finish all questions",
       "modal_test_description": "Are you sure to submit the test?",
       "score": "Score: "
+    },
+    "login": {
+      "username": "Username",
+      "password": "Password",
+      "confirm_password": "Confirm Password",
+      "login": "Login",
+      "back": "Back",
+      "sign_up": "Sign Up",
+      "username_not_empty": "Username must not empty",
+      "password_not_empty": "Password must not empty",
+      "password_must_match": "Confirm password must match"
     }
   }
 }
