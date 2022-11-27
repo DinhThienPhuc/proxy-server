@@ -141,31 +141,16 @@ router.post("/:id", isAuthenticated, async (req, res) => {
 
 router.get("/", isAuthenticated, async (req, res) => {
   try {
-    const { page = "1", size = "10", search } = req.query;
-    let paginationParams = {};
-    if (!isNaN(Number(size))) {
-      paginationParams.limit = Number(size);
-    }
-    if (!isNaN(Number(page))) {
-      paginationParams.offset = Number(size) * (Number(page) - 1);
-    }
-    if (search) {
-      paginationParams.where = {
-        name: {
-          [Sequelize.Op.like]: `%${search}%`,
-        },
-      };
-    }
-    const listExams = Object.keys(paginationParams).length
-      ? await models.Exam.findAndCountAll(paginationParams)
-      : await models.Exam.findAndCountAll();
+    const { page = "1", size = "10", search, examStatus = "all" } = req.query;
+
+    const listExams = await models.Exam.findAll();
     const userExamsQuestion = await models.UserExamQuestion.findAll({
       where: { userId: req.user.id },
     });
 
     const uniqUserExams = uniqBy(userExamsQuestion, "examId");
 
-    const data = listExams?.rows?.map((exam) => ({
+    let data = listExams?.map((exam) => ({
       id: exam.id,
       name: exam.name,
       description: exam.description,
@@ -175,10 +160,33 @@ router.get("/", isAuthenticated, async (req, res) => {
         uniqUserExams?.find((e) => exam.id === e.examId)?.examScore ?? null,
     }));
 
+    let totalRecords = 0;
+    if (search) {
+      data = data.filter(
+        (d) => d.name?.toLowerCase()?.indexOf(search.toLowerCase()) >= 0
+      );
+      totalRecords = data.length;
+    }
+
+    if (examStatus === "done") {
+      data = data.filter((d) => !!d.score);
+      totalRecords = data.length;
+    } else if (examStatus === "not-done") {
+      data = data.filter((d) => !d.score);
+      totalRecords = data.length;
+    }
+
+    if (!isNaN(Number(size)) && !isNaN(Number(page))) {
+      data = data.slice(
+        Number(size) * (Number(page) - 1),
+        Number(size) * Number(page)
+      );
+    }
+
     res.json({
       page: Number(page),
       size: Number(size),
-      totalRecords: listExams.count,
+      totalRecords,
       data,
     });
   } catch (error) {
