@@ -56,6 +56,25 @@ const Styled = {
     font-weight: bold;
     color: red;
 `,
+  BackButton: styled.button`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 12px;
+    background-color: #ff5858;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    height: 30px;
+    color: white;
+    &:hover {
+      background-color: #d14545;
+    }
+    border: none;
+    cursor: pointer;
+    p {
+      margin-left: 6px;
+    }
+  `
 };
 
 export default Styled;

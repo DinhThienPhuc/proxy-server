@@ -16,7 +16,9 @@
         "tested": "Tested"
       },
       "empty_data": "Empty data",
-      "filter_placeholder_search": "Test's name"
+      "filter_placeholder_search": "Test's name",
+      "view": "View",
+      "test": "Test"
     },
     "detail": {
       "question_no": "Question",
@@ -26,7 +28,8 @@
       "modal_test_title": "Submit the test",
       "not_enough_field": "You're not finish all questions",
       "modal_test_description": "Are you sure to submit the test?",
-      "score": "Score: "
+      "score": "Score: ",
+      "back": "Go back"
     },
     "login": {
       "username": "Username",
