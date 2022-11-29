@@ -2,13 +2,13 @@ import { FieldValues, FormProvider, useForm } from "react-hook-form";
 import Question, { QUESTION_TYPE } from "./components/Question";
 import { getDetailExams, markExam } from "api/post/post.api";
 import { useCallback, useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import ModalComponent from "components/Modal";
 import Styled from "./index.style";
 import { t } from "i18next";
-import { useNavigate, useSearchParams } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import ModalComponent from "components/Modal";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 enum Mode {
   VIEW = "view",
@@ -157,6 +157,7 @@ const Detail = () => {
             value={i.userAnswer === null ? undefined : i.userAnswer}
             no={index + 1}
             isRight={i.isRight}
+            isViewMode={searchParams.get("status") === Mode.VIEW}
           />
         ))}
         {/* </Styled.DetailContainer> */}

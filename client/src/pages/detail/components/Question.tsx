@@ -18,6 +18,7 @@ interface Props extends QuestionProps {
   type: QUESTION_TYPE;
   statusType?: ModalType;
   formPayload?: FieldValues;
+  isViewMode?: boolean;
 }
 
 interface QuestionProps {
@@ -42,7 +43,6 @@ interface QuestionChoiceProps {
   onChange?: UseFormSetValue<FieldValues>;
   disabled?: boolean;
   value?: string;
-  isRight?: boolean;
 }
 
 const MultiChoice = ({
@@ -51,7 +51,6 @@ const MultiChoice = ({
   onChange,
   disabled,
   value,
-  isRight,
 }: QuestionChoiceProps) => {
   const [valueState, setValueState] = useState<string[]>([]);
 
@@ -80,16 +79,6 @@ const MultiChoice = ({
     }
   };
 
-  const showIcon = (v?: string | number) => {
-    if (isRight) {
-      if (value?.split("::").includes(String(v))) return <Styled.CheckedIcon />;
-      return null;
-    } else {
-      if (value?.split("::").includes(String(v))) return <Styled.ClosedIcon />;
-      return null;
-    }
-  };
-
   return (
     <>
       {options?.map(
@@ -104,7 +93,6 @@ const MultiChoice = ({
               <Styled.MultiChoiceLabel disabled={disabled}>
                 {item?.value}
               </Styled.MultiChoiceLabel>
-              <Styled.ShowIcon>{showIcon(item?.label)}</Styled.ShowIcon>
             </Styled.MultiChoiceContainer>
           ),
       )}
@@ -118,7 +106,6 @@ const SingleChoice = ({
   onChange,
   disabled,
   value = undefined,
-  isRight,
 }: QuestionChoiceProps) => {
   const [state, setState] = useState<string | number | undefined>(value);
 
@@ -134,16 +121,6 @@ const SingleChoice = ({
   const handleChange = (value?: string | number) => {
     setState(value);
     onChange?.(questionId as string, value);
-  };
-
-  const showIcon = (v?: string | number) => {
-    if (isRight) {
-      if (v === value) return <Styled.CheckedIcon />;
-      return null;
-    } else {
-      if (v === value) return <Styled.ClosedIcon />;
-      return null;
-    }
   };
 
   return (
@@ -162,7 +139,6 @@ const SingleChoice = ({
                 label={item?.value}
                 disabled={disabled}
               />
-              <Styled.ShowIcon>{showIcon(item?.label)}</Styled.ShowIcon>
             </Styled.FormControlLabelContainer>
           ),
       )}
@@ -175,7 +151,6 @@ const MissingText = ({
   onChange,
   disabled,
   value,
-  isRight,
 }: QuestionChoiceProps) => {
   const [state, setState] = useState<string | undefined>(value);
   const { t } = useTranslation();
@@ -191,14 +166,6 @@ const MissingText = ({
     }
   }, [value]);
 
-  const showIcon = () => {
-    if (value) {
-      if (isRight) return <Styled.CheckedIcon />;
-      return <Styled.ClosedIcon />;
-    }
-    return null;
-  };
-
   return (
     <Styled.InputTextContainer>
       <Styled.InputText
@@ -209,7 +176,6 @@ const MissingText = ({
         placeholder={t("detail.missing_text")}
         onChange={(e) => handleChange(e.target.value)}
       />
-      <Styled.ShowIcon>{showIcon()}</Styled.ShowIcon>
     </Styled.InputTextContainer>
   );
 };
@@ -231,7 +197,6 @@ const Question = (props: Props) => {
             onChange={setValue}
             value={props?.value}
             questionId={props.questionId}
-            isRight={props.isRight}
             options={[
               { value: props?.option_1 || "", label: "a" },
               { value: props?.option_2 || "", label: "b" },
@@ -247,7 +212,6 @@ const Question = (props: Props) => {
             onChange={setValue}
             value={props?.value === undefined ? "" : props?.value}
             questionId={props.questionId}
-            isRight={props.isRight}
             options={[
               { value: props?.option_1 || "", label: "a" },
               { value: props?.option_2 || "", label: "b" },
@@ -264,7 +228,6 @@ const Question = (props: Props) => {
             value={props?.value}
             questionId={props.questionId}
             disabled={isInViewMode}
-            isRight={props.isRight}
           />
         );
       default:
@@ -277,6 +240,17 @@ const Question = (props: Props) => {
     return props?.formPayload?.[props?.questionId] === undefined;
   }, [props?.formPayload, props?.questionId]);
 
+  const badge = useMemo(() => {
+    if (!props.isViewMode) {
+      return null;
+    }
+    return (
+      <Styled.Badge isRight={!!props.isRight}>
+        {props.isRight ? <Styled.CheckedIcon /> : <Styled.ClosedIcon />}
+      </Styled.Badge>
+    );
+  }, [props.isRight, props.isViewMode]);
+
   return (
     <Styled.QuestionContainer
       isFail={props.statusType === ModalType.FAIL && isEmpty}
@@ -288,6 +262,7 @@ const Question = (props: Props) => {
         {props?.title}
       </Styled.QuestionTitle>
       {renderTypeQuestion()}
+      {badge}
     </Styled.QuestionContainer>
   );
 };
