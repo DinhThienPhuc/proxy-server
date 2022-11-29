@@ -2,10 +2,10 @@ import { Checkbox, FormControlLabel, Radio } from "@mui/material";
 import { FieldValues, UseFormSetValue, useFormContext } from "react-hook-form";
 import { useEffect, useMemo, useState } from "react";
 
+import { ModalType } from "..";
 import Styled from "./index.style";
 import { useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { ModalType } from "..";
 
 export enum QUESTION_TYPE {
   MULTIPLE_CHOICE = "MULTIPLE_CHOICE",
@@ -60,7 +60,7 @@ const MultiChoice = ({
       setValueState([]);
       return;
     } else {
-      const parseValue = value?.split(":::");
+      const parseValue = value?.split("::");
       setValueState(parseValue as string[]);
     }
   }, [value]);
@@ -72,21 +72,20 @@ const MultiChoice = ({
     if (flag) {
       cloneState.push(value);
       setValueState(cloneState);
-      onChange?.(questionId as string, cloneState.join(":::"));
+      onChange?.(questionId as string, cloneState.join("::"));
     } else {
       const newState = cloneState.filter((i: string) => i !== value);
       setValueState(newState);
-      onChange?.(questionId as string, newState.join(":::"));
+      onChange?.(questionId as string, newState.join("::"));
     }
   };
 
   const showIcon = (v?: string | number) => {
     if (isRight) {
-      if (value?.split(":::").includes(String(v)))
-        return <Styled.CheckedIcon />;
+      if (value?.split("::").includes(String(v))) return <Styled.CheckedIcon />;
       return null;
     } else {
-      if (value?.split(":::").includes(String(v))) return <Styled.ClosedIcon />;
+      if (value?.split("::").includes(String(v))) return <Styled.ClosedIcon />;
       return null;
     }
   };
