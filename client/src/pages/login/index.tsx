@@ -104,9 +104,7 @@ const Login = () => {
               onChange={(e) => method.setValue("username", e.target.value)}
               endAdornment={
                 <InputAdornment position="end">
-                  <IconButton edge="end">
-                    <AccountCircle />
-                  </IconButton>
+                  <AccountCircle />
                 </InputAdornment>
               }
               label={t("login.username")}

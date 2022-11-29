@@ -71,7 +71,7 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    if (searchDebounce) {
+    if (searchDebounce !== null) {
       getData({ page: 1, examStatus: filter, search: searchDebounce });
     }
     /*Only call for search changes*/

@@ -16,7 +16,9 @@
         "tested": "Đã hoàn thành"
       },
       "empty_data": "Không có bài thi nào",
-      "filter_placeholder_search": "Tên bài thi"
+      "filter_placeholder_search": "Tên bài thi",
+      "view": "Xem",
+      "test": "Làm bài"
     },
     "detail": {
       "question_no": "Câu hỏi",
@@ -26,7 +28,8 @@
       "modal_test_title": "Nộp bài thi",
       "not_enough_field": "Bạn chưa điền đủ tất cả các câu hỏi",
       "modal_test_description": "Chắc chắn nộp bài thi?",
-      "score": "Điểm thi: "
+      "score": "Điểm thi: ",
+      "back": "Quay lại"
     },
     "login": {
       "username": "Tài khoản",

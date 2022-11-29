@@ -8,6 +8,7 @@ import { t } from "i18next";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import ModalComponent from "components/Modal";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 enum Mode {
   VIEW = "view",
@@ -131,6 +132,10 @@ const Detail = () => {
   return (
     <FormProvider {...method}>
       <Styled.FormContainer onSubmit={method.handleSubmit(onSubmit)}>
+        <Styled.BackButton type="button" onClick={() => navigate(-1)}>
+          <ArrowBackIcon />
+          <p>{t("detail.back")}</p>
+        </Styled.BackButton>
         {/* <Styled.DetailContainer> */}
         <Styled.TestName>{data?.name}</Styled.TestName>
         <Styled.TestDescription>{data?.description}</Styled.TestDescription>
@@ -161,8 +166,7 @@ const Detail = () => {
               {t("detail.retest")}
             </Styled.ReworkButton>
           )}
-          {((data && !data?.examScore) ||
-            searchParams.get("status") === Mode.TEST) && (
+          {data && searchParams.get("status") === Mode.TEST && (
             <Styled.SubmitButton type="button" onClick={handleOpenModal}>
               {t("detail.submit")}
             </Styled.SubmitButton>

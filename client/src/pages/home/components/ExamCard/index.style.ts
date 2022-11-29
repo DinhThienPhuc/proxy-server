@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 
 const Styled = {
-  CardWrapper: styled(NavLink)`
+  CardWrapper: styled.div`
     position: relative;
     width: 100%;
     height: 160px;
@@ -47,6 +47,49 @@ const Styled = {
     width: 140px;
     text-align: right;
   `,
+  ButtonGroup: styled.div`
+    display: flex;
+    justify-content: end;
+    margin-top: 10px;
+    gap: 10px;
+  `,
+  ButtonView: styled(NavLink)`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 12px;
+    background-color: #ff5858;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    height: 30px;
+    color: white;
+    &:hover {
+      background-color: #d14545;
+    }
+    border: none;
+    cursor: pointer;
+    p {
+      margin-left: 6px;
+    }`
+  ,
+  ButtonTest: styled(NavLink)`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 12px;
+    background-color: #5878ff;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    height: 30px;
+    color: white;
+    &:hover {
+      background-color: #4760cb;
+    }
+    border: none;
+    cursor: pointer;
+    p {
+      margin-left: 6px;
+    }`
 };
 
 export default Styled;
