@@ -1,20 +1,22 @@
-import { InputBase, RadioGroup, TextField } from "@mui/material";
+import { InputBase, RadioGroup } from "@mui/material";
+
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
-
 import styled from "styled-components";
-type Props =  {
-  isFail: boolean
-}
+
+type Props = {
+  isFail: boolean;
+};
 const Styled = {
   QuestionContainer: styled.div<Props>`
-  margin: 0 auto 20px;
-  padding: 20px;
-  border: ${({isFail}) => (isFail ? "1px solid red" : "1px solid #cccccc")};
-  background-color: ${({isFail}) => (isFail ? "#f5c4c4" : "white")};
-  border-radius: 8px;
-  min-height: 150px;
-`,
+    position: relative;
+    margin: 0 auto 20px;
+    padding: 20px;
+    border: ${({ isFail }) => (isFail ? "1px solid red" : "1px solid #cccccc")};
+    background-color: ${({ isFail }) => (isFail ? "#f5c4c4" : "white")};
+    border-radius: 8px;
+    min-height: 150px;
+  `,
   QuestionTitle: styled.div`
     word-break: break-all;
   `,
@@ -32,19 +34,19 @@ const Styled = {
     margin-top: 8px;
     display: flex;
     align-items: center;
-    gap: 10px
+    gap: 10px;
   `,
   InputText: styled(InputBase)`
-    background: #white;
+    background: white;
     border: 1px solid #cccccc;
     border-radius: 4px;
     padding: 0 6px;
   `,
   CheckedIcon: styled(CheckIcon)`
-    color: green;
+    color: white;
   `,
   ClosedIcon: styled(CloseIcon)`
-    color: red;
+    color: white;
   `,
   MultiChoiceContainer: styled.div`
     display: flex;
@@ -52,11 +54,23 @@ const Styled = {
   `,
   ShowIcon: styled.div`
     display: flex;
-    aligh-items: center;
+    align-items: center;
     margin-left: 4px;
   `,
   MultiChoiceLabel: styled.span<{ disabled?: boolean }>`
     color: ${({ disabled }) => (disabled ? "rgba(0, 0, 0, 0.38)" : "")};
+  `,
+  Badge: styled.div<{ isRight: boolean }>`
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: ${({ isRight }) => (isRight ? "green" : "red")};
+    border-bottom-left-radius: 24px;
   `,
 };
 
