@@ -16,22 +16,22 @@ const Question = sequelize.define(
       unique: true,
     },
     type: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT("long"),
     },
     a: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT("long"),
     },
     b: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT("long"),
     },
     c: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT("long"),
     },
     d: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT("long"),
     },
     answer: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT("long"),
     },
   },
   {

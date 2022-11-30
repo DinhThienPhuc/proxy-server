@@ -16,7 +16,7 @@ const Exam = sequelize.define(
       unique: true,
     },
     description: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT("long"),
     },
   },
   {
