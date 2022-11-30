@@ -12,11 +12,11 @@ const Exam = sequelize.define(
       primaryKey: true,
     },
     name: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       unique: true,
     },
     description: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
     },
   },
   {

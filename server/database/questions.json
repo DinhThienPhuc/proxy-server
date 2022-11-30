@@ -6,7 +6,7 @@
     "b": "It's the same place.",
     "c": "Only for half an hour.",
     "d": null,
-    "answer": "a"
+    "answer": "c"
   },
   {
     "title": "What colour will you paint the children's bedroom?",
@@ -15,7 +15,7 @@
     "b": "We can't decide.",
     "c": "It wasn't very difficult.",
     "d": null,
-    "answer": "a::b"
+    "answer": "c::b"
   },
   {
     "title": "I can't understand this email.",
@@ -32,8 +32,8 @@
     "a": "How much did you pay?",
     "b": "Afternoon and evening.",
     "c": "I'll just check for you.",
-    "d": null,
-    "answer": "c::a"
+    "d": "Would you like additional combo?",
+    "answer": "c::d"
   },
   {
     "title": "Shall we go to the gym now?",
@@ -114,7 +114,7 @@
     "b": "No matter how",
     "c": "However much",
     "d": "Although",
-    "answer": "b::d"
+    "answer": "b::c"
   },
   {
     "title": "It was only ten days ago ...... she started her new job.",
