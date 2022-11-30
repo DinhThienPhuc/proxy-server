@@ -21,10 +21,10 @@ const UserExamQuestion = sequelize.define(
       type: DataTypes.UUID,
     },
     userAnswer: {
-      type: DataTypes.TEXT,
+      type: DataTypes.STRING,
     },
     examScore: {
-      type: DataTypes.TEXT,
+      type: DataTypes.STRING,
     },
   },
   {
