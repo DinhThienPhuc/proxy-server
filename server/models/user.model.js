@@ -12,25 +12,25 @@ const User = sequelize.define(
       primaryKey: true,
     },
     firstName: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT("long"),
     },
     lastName: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT("long"),
     },
     description: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT("long"),
     },
     email: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT("long"),
     },
     gender: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT("long"),
     },
     age: {
       type: DataTypes.INTEGER,
     },
     password: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT("long"),
       allowNull: false,
     },
     username: {
@@ -39,7 +39,7 @@ const User = sequelize.define(
       unique: true,
     },
     refreshToken: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT("long"),
     },
   },
   {
