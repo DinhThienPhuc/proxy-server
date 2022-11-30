@@ -12,26 +12,26 @@ const Question = sequelize.define(
       primaryKey: true,
     },
     title: {
-      type: DataTypes.TEXT,
+      type: DataTypes.STRING,
       unique: true,
     },
     type: {
-      type: DataTypes.TEXT,
+      type: DataTypes.STRING,
     },
     a: {
-      type: DataTypes.TEXT,
+      type: DataTypes.STRING,
     },
     b: {
-      type: DataTypes.TEXT,
+      type: DataTypes.STRING,
     },
     c: {
-      type: DataTypes.TEXT,
+      type: DataTypes.STRING,
     },
     d: {
-      type: DataTypes.TEXT,
+      type: DataTypes.STRING,
     },
     answer: {
-      type: DataTypes.TEXT,
+      type: DataTypes.STRING,
     },
   },
   {
