@@ -5,13 +5,13 @@
 - Basic structure:
 
 ```bash
-    client <-> NGINX <-> proxy_passs to <-> SERVER
+    client <-> NGINX <-> proxy_pass to <-> SERVER
 ```
 
 - Cache structure:
 
 ```bash
-    client <-> NGINX <-> proxy_passs to <-> SERVER
+    client <-> NGINX <-> proxy_pass to <-> SERVER
                  |
                  |
                Cache

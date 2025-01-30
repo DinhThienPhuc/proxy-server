@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 # ps: proxy-server
 services:
@@ -10,11 +10,11 @@ services:
       context: ./server
       dockerfile: Dockerfile
     ports:
-      - '8000:8000'
+      - "8000:8000"
     restart: unless-stopped
     volumes:
-      - '/app/node_modules'
-      - './:/app'
+      - "/app/node_modules"
+      - "./:/app"
     networks:
       - ps_network
 
@@ -26,11 +26,11 @@ services:
       context: ./server-html
       dockerfile: Dockerfile
     ports:
-      - '8001:8001'
+      - "8001:8001"
     restart: unless-stopped
     volumes:
-      - '/app/node_modules'
-      - './:/app'
+      - "/app/node_modules"
+      - "./:/app"
     networks:
       - ps_network
 
@@ -42,11 +42,11 @@ services:
       context: ./server-image
       dockerfile: Dockerfile
     ports:
-      - '8002:8002'
+      - "8002:8002"
     restart: unless-stopped
     volumes:
-      - '/app/node_modules'
-      - './:/app'
+      - "/app/node_modules"
+      - "./:/app"
     networks:
       - ps_network
 
@@ -58,7 +58,7 @@ services:
       context: ./nginx
       dockerfile: Dockerfile
     ports:
-      - '7000:7000'
+      - "7000:7000"
     restart: unless-stopped
     depends_on:
       - ps_server
@@ -73,7 +73,7 @@ services:
       context: ./nginx-html
       dockerfile: Dockerfile
     ports:
-      - '7001:7001'
+      - "7001:7001"
     restart: unless-stopped
     depends_on:
       - ps_server_html
@@ -88,7 +88,7 @@ services:
       context: ./nginx-image
       dockerfile: Dockerfile
     ports:
-      - '7002:7002'
+      - "7002:7002"
     restart: unless-stopped
     depends_on:
       - ps_server_image
@@ -103,7 +103,7 @@ services:
       context: ./nginx-filter
       dockerfile: Dockerfile
     ports:
-      - '7100:7100'
+      - "7100:7100"
     restart: unless-stopped
     depends_on:
       - ps_nginx_html
